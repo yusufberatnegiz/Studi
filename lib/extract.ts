@@ -91,6 +91,47 @@ export async function extractTextFromDocx(
 }
 
 /**
+ * Extract text from an image (or scanned PDF page) via OpenAI vision OCR.
+ * mimeType should be "image/jpeg" or "image/png".
+ * Returns an empty string on failure.
+ */
+export async function extractTextWithOCR(
+  buffer: ArrayBuffer,
+  mimeType: string
+): Promise<string> {
+  try {
+    const OpenAI = (await import("openai")).default;
+    const openai = new OpenAI({ apiKey: process.env.AI_API_KEY });
+
+    const base64 = Buffer.from(buffer).toString("base64");
+    const dataUrl = `data:${mimeType};base64,${base64}`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4.1-mini",
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "image_url",
+              image_url: { url: dataUrl },
+            },
+            {
+              type: "text",
+              text: "Extract all visible text from this image exactly as it appears.\nOutput plain text only - no summaries, no explanations, no markdown formatting.\nPreserve the original structure, line breaks, and any code snippets as written.",
+            },
+          ],
+        },
+      ],
+    });
+
+    return response.choices[0]?.message?.content ?? "";
+  } catch {
+    return "";
+  }
+}
+
+/**
  * Extract plain text from a PPTX ArrayBuffer.
  * Unzips the file and reads DrawingML <a:t> text nodes from each slide XML.
  * Returns an empty string on failure.

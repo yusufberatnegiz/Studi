@@ -62,7 +62,7 @@ export default function CreateCourseForm({ action }: Props) {
               </button>
               <span className="text-xs text-gray-400 truncate max-w-[200px]">
                 {fileNames.length === 0
-                  ? "Optional - PDF, DOCX, PPT, PPTX"
+                  ? "Optional - PDF, DOCX, PPT, PPTX, JPG, PNG"
                   : fileNames.length === 1
                   ? fileNames[0]
                   : `${fileNames.length} files selected`}
@@ -72,7 +72,7 @@ export default function CreateCourseForm({ action }: Props) {
               ref={fileRef}
               type="file"
               name="files"
-              accept=".pdf,.docx,.ppt,.pptx"
+              accept=".pdf,.docx,.ppt,.pptx,.jpg,.jpeg,.png"
               multiple
               className="hidden"
               disabled={isPending}

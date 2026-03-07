@@ -5,7 +5,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import OpenAI from "openai";
 import { createClient } from "@/lib/supabase/server";
-import { extractTextFromPdf } from "@/lib/extract";
+import { extractTextFromPdf, extractTextWithOCR } from "@/lib/extract";
 import { getSourceFileMimeType } from "@/lib/source-upload";
 
 export type GenerateState = { error: string } | { success: true } | null;
@@ -113,7 +113,14 @@ export async function generateQuestions(
         examContext += "\n\n" + extracted.slice(0, 3000);
       }
     } else if (["jpg", "jpeg", "png"].includes(ext)) {
-      fileWarnings.push(`${file.name}: image files cannot be read as text. Paste the questions instead.`);
+      const mimeType = ext === "png" ? "image/png" : "image/jpeg";
+      const buffer = await file.arrayBuffer();
+      const ocr = await extractTextWithOCR(buffer, mimeType);
+      if (ocr.trim().length < 20) {
+        fileWarnings.push(`${file.name}: OCR found no readable text. Paste the questions instead.`);
+      } else {
+        examContext += "\n\n" + ocr.slice(0, 3000);
+      }
     }
   }
 

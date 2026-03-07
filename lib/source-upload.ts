@@ -13,6 +13,7 @@ import {
   extractTextFromPdf,
   extractTextFromDocx,
   extractTextFromPptx,
+  extractTextWithOCR,
 } from "@/lib/extract";
 
 // Using a broad type so this utility stays independent of the generated Supabase types
@@ -28,6 +29,9 @@ const EXT_TO_MIME: Record<string, string> = {
   docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   ppt: "application/vnd.ms-powerpoint",
   pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
 };
 
 /** Returns the canonical MIME type for a source file, or null if not allowed. */
@@ -88,11 +92,21 @@ async function runExtraction({
     if (mimeType === "application/pdf") {
       const extracted = await extractTextFromPdf(content);
       if (extracted.trim().length < 50) {
-        throw new Error(
-          "PDF has no selectable text (scanned image). OCR is not supported yet."
-        );
+        // Scanned PDF - fall back to vision OCR on the raw buffer
+        const ocr = await extractTextWithOCR(content, "image/jpeg");
+        if (ocr.trim().length < 20) {
+          throw new Error("PDF has no selectable text and OCR found no content.");
+        }
+        text = ocr;
+      } else {
+        text = extracted;
       }
-      text = extracted;
+    } else if (mimeType === "image/jpeg" || mimeType === "image/png") {
+      const ocr = await extractTextWithOCR(content, mimeType);
+      if (ocr.trim().length < 20) {
+        throw new Error("Image OCR found no readable text.");
+      }
+      text = ocr;
     } else if (
       mimeType ===
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -168,7 +182,7 @@ export async function processSourceFile(
 
   const mimeType = getSourceFileMimeType(file);
   if (!mimeType) {
-    return `${file.name}: unsupported type. Use .pdf, .docx, .ppt, or .pptx.`;
+    return `${file.name}: unsupported type. Use .pdf, .docx, .ppt, .pptx, .jpg, .jpeg, or .png.`;
   }
 
   const content = await file.arrayBuffer();

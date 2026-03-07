@@ -55,7 +55,7 @@ export default function SourceUploadForm({ courseId, action }: Props) {
           ref={fileRef}
           type="file"
           name="files"
-          accept=".pdf,.docx,.ppt,.pptx"
+          accept=".pdf,.docx,.ppt,.pptx,.jpg,.jpeg,.png"
           multiple
           className="hidden"
           disabled={isPending}
@@ -64,7 +64,7 @@ export default function SourceUploadForm({ courseId, action }: Props) {
           }
         />
         <p className="text-xs text-gray-400 mt-1.5">
-          PDF, DOCX, PPT, PPTX - max 10 MB each
+          PDF, DOCX, PPT, PPTX, JPG, PNG - max 10 MB each
         </p>
       </div>
 
