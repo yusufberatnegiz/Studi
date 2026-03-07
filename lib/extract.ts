@@ -83,13 +83,15 @@ export async function extractTextFromDocx(
 ): Promise<string> {
   try {
     const mod = await import("mammoth");
-    // CJS modules loaded via dynamic import expose exports under .default
-    const mammoth = (mod as ReturnType<typeof Object.create>).default ?? mod;
-    console.log(
-      "[DOCX] mammoth type:", typeof mammoth,
-      "extractRawText:", typeof mammoth?.extractRawText
-    );
-    const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+    // Mammoth is a CJS module. When loaded via dynamic import the named exports
+    // may live on mod directly OR under mod.default depending on the bundler/
+    // Node version. Resolve extractRawText from whichever side has it.
+    const m = mod as ReturnType<typeof Object.create>;
+    const extractRawText: (input: { buffer: Buffer }) => Promise<{ value: string }> =
+      m.default?.extractRawText ?? m.extractRawText;
+    console.log("[DOCX] extractRawText:", typeof extractRawText);
+    // Pass a Node.js Buffer (not ArrayBuffer) — more reliable across mammoth versions
+    const result = await extractRawText({ buffer: Buffer.from(buffer) });
     const raw = result.value ?? "";
     console.log(
       "[DOCX] raw length:", raw.length,
