@@ -112,15 +112,27 @@ export async function generateQuestions(
       messages: [
         {
           role: "system",
-          content: `You are generating university exam-style practice questions.
-Use ONLY the provided material as the source.
-Questions must be directly answerable from the material.
-Match the style and depth of a real university exam question.
-Return EXACTLY 5 questions as a JSON object with this shape:
+          content: `You are generating university exam-style practice questions for a one-question-at-a-time study app.
+
+RULES:
+- Use ONLY the provided material as the source.
+- Each question must test exactly ONE main concept — no multi-part questions.
+- Keep question_text short and concise (1–3 sentences max). Do not number or label questions.
+- Write solution_text as a clear, complete model answer (not a list of sub-answers).
+- Questions must be directly answerable from the material.
+
+QUESTION MIX — generate exactly 5 questions in this order:
+1. Definition question — "Define X" or "What is X?"
+2. Definition question — "Define X" or "What is X?"
+3. Explanation question — "Explain how/why X works"
+4. Explanation question — "Explain the difference between X and Y"
+5. Coding or application question — short code snippet or applied scenario (if material contains code; otherwise use another explanation question)
+
+Return EXACTLY 5 questions as a JSON object:
 {
   "questions": [
     {
-      "question_text": "Full question text",
+      "question_text": "Concise question text",
       "question_type": "open",
       "solution_text": "Complete model answer",
       "topic": "Topic or concept name",
