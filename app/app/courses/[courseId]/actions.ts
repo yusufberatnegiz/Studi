@@ -65,14 +65,14 @@ async function runExtraction({
   content: ArrayBuffer | string;
   jobId: string;
 }) {
-  // Transition: queued → processing
+  // Transition: queued → running / processing
   await supabase
     .from("documents")
     .update({ status: "processing" })
     .eq("id", documentId);
   await supabase
     .from("jobs")
-    .update({ status: "processing" })
+    .update({ status: "running" })
     .eq("id", jobId);
 
   try {
@@ -129,7 +129,7 @@ async function runExtraction({
 
     await supabase
       .from("documents")
-      .update({ status: "failed" })
+      .update({ status: "failed", error: errorMsg })
       .eq("id", documentId);
     await supabase
       .from("jobs")
@@ -231,20 +231,25 @@ export async function uploadDocument(
     document_id: documentId,
     type: "extract",
     status: "queued",
+    input: { documentId },
+    output: {},
+    error: null,
   });
 
-  // 4. Run extraction synchronously
-  if (!jobError) {
-    await runExtraction({
-      supabase,
-      documentId,
-      userId: user.id,
-      courseId,
-      mimeType,
-      content,
-      jobId,
-    });
+  if (jobError) {
+    return { error: `Job creation failed: ${jobError.message}` };
   }
+
+  // 4. Run extraction synchronously (server-side, inside this server action)
+  await runExtraction({
+    supabase,
+    documentId,
+    userId: user.id,
+    courseId,
+    mimeType,
+    content,
+    jobId,
+  });
 
   revalidatePath(`/app/courses/${courseId}`);
   return { success: true };
