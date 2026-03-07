@@ -228,7 +228,6 @@ export async function uploadDocument(
   const { error: jobError } = await supabase.from("jobs").insert({
     id: jobId,
     user_id: user.id,
-    document_id: documentId,
     type: "extract",
     status: "queued",
     input: { documentId },
