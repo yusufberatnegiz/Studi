@@ -36,8 +36,9 @@ export default async function AppPage() {
     <div className="min-h-screen bg-white">
       <nav className="border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <span className="font-semibold text-gray-900 tracking-tight">
-            Exai
+          <span className="flex items-center gap-2">
+            <img src="/logo.png" alt="Exai" className="h-7 w-7 object-contain" />
+            <span className="font-semibold text-gray-900 tracking-tight">Exai</span>
           </span>
           <SignOutButton />
         </div>

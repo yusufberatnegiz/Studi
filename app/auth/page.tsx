@@ -71,11 +71,9 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6">
-      <Link
-        href="/"
-        className="mb-8 font-semibold text-gray-900 tracking-tight text-lg"
-      >
-        Exai
+      <Link href="/" className="mb-8 flex items-center gap-2">
+        <img src="/logo.png" alt="Exai" className="h-8 w-8 object-contain" />
+        <span className="font-semibold text-gray-900 tracking-tight text-lg">Exai</span>
       </Link>
 
       <Card className="w-full max-w-sm">
