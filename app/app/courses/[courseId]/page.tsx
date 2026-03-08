@@ -5,7 +5,8 @@ import SignOutButton from "@/app/app/sign-out-button";
 import SourceUploadForm from "./upload-form";
 import { uploadSourceMaterials } from "./actions";
 import GenerateForm from "./generate-form";
-import { generateQuestions } from "./generate-actions";
+import { generateQuestions, generateWeakTopicQuestions } from "./generate-actions";
+import WeakTopicForm from "./weak-topic-form";
 
 const STATUS_STYLES: Record<string, string> = {
   uploaded: "text-gray-400",
@@ -45,10 +46,26 @@ export default async function CourseDetailPage({
 
   const { data: questionSets } = await supabase
     .from("question_sets")
-    .select("id, title, created_at, questions(count)")
+    .select("id, title, created_at, mode, questions(count)")
     .eq("course_id", courseId)
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
+
+  const { data: topicStatsRaw } = await supabase
+    .from("topic_stats")
+    .select("topic, attempts, correct")
+    .eq("course_id", courseId)
+    .eq("user_id", user.id)
+    .gte("attempts", 1)
+    .order("attempts", { ascending: false });
+
+  // Sort by accuracy asc (weakest first) for display
+  const topicStats = (topicStatsRaw ?? [])
+    .map((t) => ({ ...t, accuracy: t.attempts > 0 ? t.correct / t.attempts : 0 }))
+    .sort((a, b) => a.accuracy - b.accuracy);
+
+  // Weak-topic practice is unlocked when at least one topic has >= 2 attempts
+  const hasWeakTopics = topicStats.some((t) => t.attempts >= 2);
 
   return (
     <div className="min-h-screen bg-white">
@@ -133,7 +150,54 @@ export default async function CourseDetailPage({
           </div>
         </section>
 
-        {/* ── Section 2: Generate Questions ───────────────────────────── */}
+        {/* ── Section 2: Weak Topics ──────────────────────────────────── */}
+        <section className="space-y-6 pt-4 border-t border-gray-100">
+          <div>
+            <h2 className="text-base font-semibold text-gray-900">Weak Topics</h2>
+            <p className="text-sm text-gray-400 mt-0.5">
+              Topics where you need more practice, ranked weakest first.
+            </p>
+          </div>
+
+          {topicStats.length === 0 ? (
+            <p className="text-sm text-gray-400">
+              No data yet. Complete a practice set to see your weak topics.
+            </p>
+          ) : (
+            <div className="divide-y divide-gray-100 rounded-xl border border-gray-100">
+              {topicStats.map((t) => (
+                <div
+                  key={t.topic}
+                  className="flex items-center justify-between px-4 py-3 gap-4"
+                >
+                  <p className="text-sm font-medium text-gray-800 truncate">{t.topic}</p>
+                  <div className="flex items-center gap-4 shrink-0 text-xs text-gray-400 tabular-nums">
+                    <span>{t.correct}/{t.attempts} correct</span>
+                    <span
+                      className={`font-semibold ${
+                        t.accuracy >= 0.8
+                          ? "text-green-600"
+                          : t.accuracy >= 0.5
+                          ? "text-amber-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {Math.round(t.accuracy * 100)}%
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <WeakTopicForm
+            courseId={courseId}
+            hasWeakTopics={hasWeakTopics}
+            action={generateWeakTopicQuestions}
+          />
+        </section>
+
+        {/* ── Section 3: Generate Questions ───────────────────────────── */}
         <section className="space-y-6 pt-4 border-t border-gray-100">
           <div>
             <h2 className="text-base font-semibold text-gray-900">
@@ -173,9 +237,16 @@ export default async function CourseDetailPage({
                       className="flex items-center justify-between px-4 py-3 gap-4"
                     >
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-gray-800 truncate">
-                          {qs.title}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-medium text-gray-800 truncate">
+                            {qs.title}
+                          </p>
+                          {qs.mode === "weak_topics" && (
+                            <span className="shrink-0 text-xs font-medium px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">
+                              Weak Topics
+                            </span>
+                          )}
+                        </div>
                         <p className="text-xs text-gray-400 mt-0.5">
                           {count} {count === 1 ? "question" : "questions"} &middot;{" "}
                           {new Date(qs.created_at).toLocaleString()}

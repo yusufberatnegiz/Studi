@@ -138,10 +138,10 @@ export async function submitAttempt(
   } = await supabase.auth.getUser();
   if (!user) return { error: "Not authenticated." };
 
-  // Load question for grading
+  // Load question for grading (also fetch topic + question_set_id for topic_stats)
   const { data: question } = await supabase
     .from("questions")
-    .select("question_text, question_type, choices, solution_text")
+    .select("question_text, question_type, choices, solution_text, topic, question_set_id")
     .eq("id", questionId)
     .single();
 
@@ -176,12 +176,43 @@ export async function submitAttempt(
     );
   }
 
-  // Update attempt with grade (best-effort — don't fail the whole action if this errors)
+  // Update attempt with grade (best-effort)
   if (!grade.gradingFailed) {
     await supabase
       .from("attempts")
       .update({ is_correct: grade.is_correct, score: grade.score, feedback: grade.feedback })
       .eq("id", attempt.id);
+  }
+
+  // Update topic_stats (best-effort — don't fail grading if this errors)
+  if (!grade.gradingFailed && question.topic && question.question_set_id) {
+    const { data: qsData } = await supabase
+      .from("question_sets")
+      .select("course_id")
+      .eq("id", question.question_set_id)
+      .single();
+
+    if (qsData?.course_id) {
+      const { data: existing } = await supabase
+        .from("topic_stats")
+        .select("attempts, correct")
+        .eq("user_id", user.id)
+        .eq("course_id", qsData.course_id)
+        .eq("topic", question.topic)
+        .maybeSingle();
+
+      await supabase.from("topic_stats").upsert(
+        {
+          user_id: user.id,
+          course_id: qsData.course_id,
+          topic: question.topic,
+          attempts: (existing?.attempts ?? 0) + 1,
+          correct: (existing?.correct ?? 0) + (grade.is_correct ? 1 : 0),
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id,course_id,topic" }
+      );
+    }
   }
 
   return { grade };
