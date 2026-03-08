@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["pdf-parse", "pdf2json", "mammoth", "jszip"],
   experimental: {
     serverActions: {
-      bodySizeLimit: "10mb",
+      bodySizeLimit: "50mb",
     },
   },
 };

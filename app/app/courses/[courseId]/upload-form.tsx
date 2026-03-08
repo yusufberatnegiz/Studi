@@ -12,17 +12,24 @@ export default function SourceUploadForm({ courseId, action }: Props) {
   const [isPending, startTransition] = useTransition();
   const [state, setState] = useState<UploadState>(null);
   const [fileNames, setFileNames] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  const MAX_TOTAL_MB = 45;
+  const totalMB = files.reduce((sum, f) => sum + f.size, 0) / (1024 * 1024);
+  const tooLarge = totalMB > MAX_TOTAL_MB;
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (tooLarge) return;
     const formData = new FormData(e.currentTarget);
     startTransition(async () => {
       const result = await action(null, formData);
       setState(result);
       if (result && "success" in result) {
         setFileNames([]);
+        setFiles([]);
         formRef.current?.reset();
       }
     });
@@ -59,14 +66,24 @@ export default function SourceUploadForm({ courseId, action }: Props) {
           multiple
           className="hidden"
           disabled={isPending}
-          onChange={(e) =>
-            setFileNames(Array.from(e.target.files ?? []).map((f) => f.name))
-          }
+          onChange={(e) => {
+            const picked = Array.from(e.target.files ?? []);
+            setFiles(picked);
+            setFileNames(picked.map((f) => f.name));
+            setState(null);
+          }}
         />
         <p className="text-xs text-gray-400 mt-1.5">
-          PDF, DOCX, PPT, PPTX, JPG, PNG - max 10 MB each
+          PDF, DOCX, PPT, PPTX, JPG, PNG - max 10 MB per file, 45 MB per batch
         </p>
       </div>
+
+      {tooLarge && (
+        <p className="text-sm text-red-500">
+          Total size {totalMB.toFixed(1)} MB exceeds the 45 MB batch limit.
+          Split your files into smaller groups and upload in batches.
+        </p>
+      )}
 
       {state && "error" in state && (
         <p className="text-sm text-red-500 whitespace-pre-line">{state.error}</p>
@@ -79,7 +96,7 @@ export default function SourceUploadForm({ courseId, action }: Props) {
 
       <button
         type="submit"
-        disabled={isPending || fileNames.length === 0}
+        disabled={isPending || fileNames.length === 0 || tooLarge}
         className="px-4 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white
           hover:bg-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
