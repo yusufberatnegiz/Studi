@@ -23,7 +23,7 @@ export default function LandingPage() {
       <nav className="border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <span className="font-semibold text-gray-900 tracking-tight">
-            Studi
+            Exai
           </span>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>

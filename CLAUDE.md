@@ -1,7 +1,7 @@
-# CLAUDE.md — Claude Code Configuration for Studi
+# CLAUDE.md — Claude Code Configuration for Exai
 
 ## Project Context
-**App:** Studi
+**App:** Exai
 **Stack:** Next.js + Supabase + Vercel + Stripe + AI API
 **Stage:** MVP Development
 **User Level:** A (Vibe-coder)

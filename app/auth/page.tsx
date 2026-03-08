@@ -75,7 +75,7 @@ export default function AuthPage() {
         href="/"
         className="mb-8 font-semibold text-gray-900 tracking-tight text-lg"
       >
-        Studi
+        Exai
       </Link>
 
       <Card className="w-full max-w-sm">
@@ -85,7 +85,7 @@ export default function AuthPage() {
           </CardTitle>
           <CardDescription>
             {mode === "signin"
-              ? "Sign in to your Studi account."
+              ? "Sign in to your Exai account."
               : "Start practising smarter today."}
           </CardDescription>
         </CardHeader>

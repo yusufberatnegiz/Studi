@@ -1,6 +1,6 @@
 # Project Brief (Persistent)
 
-- **Product vision:** Studi helps university students study by generating exam-style questions from uploaded exams and guiding practice one question at a time, with weak-topic targeting.
+- **Product vision:** Exai helps university students study by generating exam-style questions from uploaded exams and guiding practice one question at a time, with weak-topic targeting.
 - **User level:** A (Vibe-coder)
 - **Design vibe:** Clean, minimal, fast, focused, modern
 - **Success metric:** $500 revenue

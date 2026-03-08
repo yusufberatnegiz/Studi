@@ -1,7 +1,7 @@
 # Product Requirements
 
 ## Product
-**Studi** — Upload past exams → practice similar questions one-by-one → improve weak topics fast.
+**Exai** — Upload past exams → practice similar questions one-by-one → improve weak topics fast.
 
 ## Target Users
 University students preparing for quizzes, midterms, finals.
@@ -31,11 +31,11 @@ University students preparing for quizzes, midterms, finals.
 
 ## Full PRD (copy)
 ---
-# Product Requirements Document: Studi MVP
+# Product Requirements Document: Exai MVP
 
 ## Product Overview
 
-App Name: Studi Tagline: Practice smarter for exams with AI-generated
+App Name: Exai Tagline: Practice smarter for exams with AI-generated
 questions from your own materials. Launch Goal: Create an income source
 reaching \$500 revenue Target Launch: 2 weeks
 

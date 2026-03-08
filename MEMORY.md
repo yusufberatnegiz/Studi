@@ -2,7 +2,7 @@
 
 ## 🏗️ Active Phase & Goal
 **Phase:** MVP Build (Phase 1)  
-**Goal:** Ship Studi MVP end-to-end:
+**Goal:** Ship Exai MVP end-to-end:
 - Upload exam (PDF/photo/text) → extract → generate question set → practice one-by-one → grade + solutions → weak topics → targeted practice → history → billing → deploy.
 
 ## ✅ Current Status

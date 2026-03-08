@@ -1,7 +1,7 @@
-# AGENTS.md — Master Plan for Studi (MVP)
+# AGENTS.md — Master Plan for Exai (MVP)
 
 ## Project Snapshot
-- **Product:** Studi — Upload past exams → practice similar questions one-by-one → improve weak topics fast.
+- **Product:** Exai — Upload past exams → practice similar questions one-by-one → improve weak topics fast.
 - **Target users:** University students studying for quizzes, midterms, finals
 - **Primary differentiator:** Clean UX with **one-question-at-a-time** practice + weak-topic targeting (not chat)
 - **Design vibe:** Clean, minimal, fast, focused, modern
