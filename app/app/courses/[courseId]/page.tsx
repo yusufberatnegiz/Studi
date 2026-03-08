@@ -177,12 +177,16 @@ export default async function CourseDetailPage({
                           {qs.title}
                         </p>
                         <p className="text-xs text-gray-400 mt-0.5">
+                          {count} {count === 1 ? "question" : "questions"} &middot;{" "}
                           {new Date(qs.created_at).toLocaleString()}
                         </p>
                       </div>
-                      <span className="text-xs text-gray-500 shrink-0">
-                        {count} {count === 1 ? "question" : "questions"}
-                      </span>
+                      <Link
+                        href={`/app/question-sets/${qs.id}/practice`}
+                        className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-900 text-white hover:bg-gray-700 transition-colors"
+                      >
+                        Start Practice
+                      </Link>
                     </div>
                   );
                 })}
