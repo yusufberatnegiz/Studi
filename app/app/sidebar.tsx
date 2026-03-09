@@ -97,7 +97,7 @@ export default function Sidebar({ userEmail }: { userEmail: string | null }) {
                 title={item.label}
                 className={`flex items-center justify-center w-8 h-8 mx-auto rounded-lg transition-colors ${
                   active
-                    ? "bg-emerald-50 text-emerald-700"
+                    ? "bg-blue-50 text-blue-700"
                     : "text-gray-400 hover:bg-gray-50 hover:text-gray-700"
                 }`}
               >
@@ -116,7 +116,7 @@ export default function Sidebar({ userEmail }: { userEmail: string | null }) {
               href={item.href}
               className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 active
-                  ? "bg-emerald-50 text-emerald-700 font-semibold"
+                  ? "bg-blue-50 text-blue-700 font-semibold"
                   : "text-gray-500 hover:bg-gray-50 hover:text-gray-800"
               }`}
             >

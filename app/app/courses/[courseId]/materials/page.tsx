@@ -2,7 +2,8 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import SourceUploadForm from "../upload-form";
-import { uploadSourceMaterials } from "../actions";
+import { uploadSourceMaterials, deleteDocument } from "../actions";
+import DeleteDocumentButton from "./delete-button";
 
 const STATUS_STYLES: Record<string, string> = {
   uploaded: "text-gray-400",
@@ -98,13 +99,16 @@ export default async function MaterialsPage({
                     <p className="text-xs text-red-400 mt-1">{doc.error}</p>
                   )}
                 </div>
-                <span
-                  className={`text-xs font-medium capitalize shrink-0 pt-0.5 ${
-                    STATUS_STYLES[doc.status] ?? "text-gray-400"
-                  }`}
-                >
-                  {doc.status}
-                </span>
+                <div className="flex flex-col items-end gap-2 shrink-0">
+                  <span
+                    className={`text-xs font-medium capitalize ${
+                      STATUS_STYLES[doc.status] ?? "text-gray-400"
+                    }`}
+                  >
+                    {doc.status}
+                  </span>
+                  <DeleteDocumentButton documentId={doc.id} action={deleteDocument} />
+                </div>
               </div>
             ))}
           </div>
