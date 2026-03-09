@@ -137,7 +137,7 @@ export default function GenerateForm({ courseId, action }: Props) {
                 <p className="text-sm font-medium text-gray-800 truncate">
                   {state.setTitle}
                 </p>
-                <span className="shrink-0 text-xs px-1.5 py-0.5 rounded bg-green-50 text-green-600 font-medium">
+                <span className="shrink-0 text-xs px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600 font-medium">
                   New
                 </span>
               </div>

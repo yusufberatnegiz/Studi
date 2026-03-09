@@ -38,8 +38,8 @@ export default function WeakTopicForm({ courseId, hasWeakTopics, action }: Props
       <button
         onClick={handleClick}
         disabled={isPending}
-        className="px-4 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white
-          hover:bg-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white
+          hover:bg-emerald-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {isPending ? "Generating..." : "Generate Weak Topic Practice"}
       </button>

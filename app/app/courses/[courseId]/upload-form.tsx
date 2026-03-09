@@ -89,7 +89,7 @@ export default function SourceUploadForm({ courseId, action }: Props) {
         <p className="text-sm text-red-500 whitespace-pre-line">{state.error}</p>
       )}
       {state && "success" in state && (
-        <p className="text-sm text-green-600">
+        <p className="text-sm text-emerald-600">
           Files uploaded and processing.
         </p>
       )}
