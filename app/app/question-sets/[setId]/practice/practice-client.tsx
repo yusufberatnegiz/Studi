@@ -367,7 +367,8 @@ export default function PracticeClient({
                 Review Questions
               </Button>
               <Button
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                variant="outline"
+                className="w-full"
                 onClick={handleGenerateWeakTopics}
                 disabled={isPending}
               >
@@ -643,9 +644,13 @@ function AnswerInput({ question, answer, isSubmitted, isPending, onChange }: Ans
   // True / False
   if (question.question_type === "tf") {
     const choices = question.choices?.length === 2 ? question.choices : ["True", "False"];
+    const selectedStyles = [
+      "border-emerald-500 bg-emerald-50 text-emerald-700",
+      "border-red-400 bg-red-50 text-red-700",
+    ];
     return (
       <div className="grid grid-cols-2 gap-3">
-        {choices.map((opt) => {
+        {choices.map((opt, i) => {
           const selected = answer === opt;
           return (
             <button
@@ -656,7 +661,7 @@ function AnswerInput({ question, answer, isSubmitted, isPending, onChange }: Ans
               className={`py-4 rounded-xl text-sm font-semibold border-2 transition-all
                 ${
                   selected
-                    ? "border-emerald-500 bg-emerald-50 text-emerald-700"
+                    ? selectedStyles[i]
                     : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
                 }
                 disabled:opacity-50 disabled:cursor-not-allowed`}
