@@ -196,9 +196,9 @@ export default function PracticeClient({ questionSet, questions, action, weakTop
                       <div
                         className={`rounded-lg px-3 py-2 text-sm ${
                           g?.is_correct
-                            ? "bg-green-50 text-green-800 border border-green-100"
+                            ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                             : g
-                            ? "bg-red-50 text-red-800 border border-red-100"
+                            ? "bg-red-50 text-red-800 border border-red-200"
                             : "bg-gray-50 text-gray-700 border border-gray-100"
                         }`}
                       >
@@ -272,7 +272,7 @@ export default function PracticeClient({ questionSet, questions, action, weakTop
                     </p>
                     {strongTopics.map((t) => (
                       <div key={t.topic} className="flex items-center justify-between">
-                        <span className="text-sm text-green-600">✓ {t.topic}</span>
+                        <span className="text-sm text-emerald-600">✓ {t.topic}</span>
                         <span className="text-xs text-gray-400 tabular-nums">
                           {Math.round(t.accuracy * 100)}%
                         </span>
@@ -325,7 +325,7 @@ export default function PracticeClient({ questionSet, questions, action, weakTop
                 Restart Practice
               </Button>
 
-              <Button className="w-full" asChild>
+              <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
                 <Link href={`/app/courses/${questionSet.courseId}`}>
                   Back to Course
                 </Link>
@@ -368,7 +368,7 @@ export default function PracticeClient({ questionSet, questions, action, weakTop
             </div>
             <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gray-800 rounded-full transition-all duration-300"
+                className="h-full bg-emerald-500 rounded-full transition-all duration-300"
                 style={{ width: `${((index + 1) / total) * 100}%` }}
               />
             </div>
@@ -402,7 +402,7 @@ export default function PracticeClient({ questionSet, questions, action, weakTop
               <Button
                 onClick={() => handleSubmit(q.id)}
                 disabled={isSubmitted || isPending || !answer.trim()}
-                className="w-28"
+                className="w-28 bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 {isPending
                   ? needsAiGrade ? "Grading..." : "Saving..."
@@ -454,7 +454,7 @@ export default function PracticeClient({ questionSet, questions, action, weakTop
                 Next
               </Button>
             ) : (
-              <Button onClick={() => setIndex(total)}>
+              <Button onClick={() => setIndex(total)} className="bg-emerald-600 hover:bg-emerald-700 text-white">
                 Finish
               </Button>
             )}
@@ -483,8 +483,8 @@ function GradeFeedback({ grade, total }: { grade: GradeResult; total: number }) 
   const earnedPts = (grade.score / 100) * maxPts;
 
   const isCorrect = grade.is_correct;
-  const containerClass = isCorrect ? "border-green-100 bg-green-50" : "border-red-100 bg-red-50";
-  const labelClass = isCorrect ? "text-green-700" : "text-red-600";
+  const containerClass = isCorrect ? "border-emerald-200 bg-emerald-50" : "border-red-200 bg-red-50";
+  const labelClass = isCorrect ? "text-emerald-700" : "text-red-600";
   const label = isCorrect ? "✓ Correct" : "✗ Incorrect";
 
   return (
@@ -528,7 +528,7 @@ function AnswerInput({ question, answer, isSubmitted, isPending, onChange }: Ans
             onClick={() => onChange(opt)}
             className={`flex-1 py-3 rounded-xl text-sm font-medium border transition-colors
               ${answer === opt
-                ? "bg-gray-900 text-white border-gray-900"
+                ? "bg-emerald-600 text-white border-emerald-600"
                 : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
               }
               disabled:opacity-50 disabled:cursor-not-allowed`}
@@ -552,7 +552,7 @@ function AnswerInput({ question, answer, isSubmitted, isPending, onChange }: Ans
             onClick={() => onChange(opt)}
             className={`w-full text-left px-4 py-3 rounded-xl text-sm border transition-colors
               ${answer === opt
-                ? "bg-gray-900 text-white border-gray-900"
+                ? "bg-emerald-600 text-white border-emerald-600"
                 : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
               }
               disabled:opacity-50 disabled:cursor-not-allowed`}

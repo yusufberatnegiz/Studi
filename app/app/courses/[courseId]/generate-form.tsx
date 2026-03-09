@@ -147,7 +147,7 @@ export default function GenerateForm({ courseId, action }: Props) {
             </div>
             <Link
               href={`/app/question-sets/${state.questionSetId}/practice`}
-              className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-900 text-white hover:bg-gray-700 transition-colors"
+              className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
             >
               Practice
             </Link>
@@ -169,8 +169,8 @@ export default function GenerateForm({ courseId, action }: Props) {
       <button
         type="submit"
         disabled={isPending}
-        className="px-4 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white
-          hover:bg-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white
+          hover:bg-emerald-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {isPending ? "Generating..." : "Generate Questions"}
       </button>

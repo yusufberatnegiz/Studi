@@ -95,7 +95,12 @@ export default function CreateCourseForm({ action }: Props) {
               </p>
             )}
 
-          <Button type="submit" size="sm" disabled={isPending}>
+          <Button
+            type="submit"
+            size="sm"
+            disabled={isPending}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white"
+          >
             {isPending ? "Creating…" : "Create course"}
           </Button>
         </form>

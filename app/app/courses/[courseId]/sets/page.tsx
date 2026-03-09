@@ -97,7 +97,7 @@ export default async function SetsPage({
                   </div>
                   <Link
                     href={`/app/question-sets/${qs.id}/practice`}
-                    className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-900 text-white hover:bg-gray-700 transition-colors"
+                    className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
                   >
                     Practice
                   </Link>

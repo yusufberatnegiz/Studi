@@ -74,7 +74,7 @@ export default async function AppPage() {
                 <Link
                   key={course.id}
                   href={`/app/courses/${course.id}`}
-                  className="group block bg-white rounded-xl border border-gray-100 p-5 hover:border-gray-300 transition-colors"
+                  className="group block bg-white rounded-xl border border-gray-100 p-5 hover:border-emerald-200 hover:bg-emerald-50/40 transition-colors"
                 >
                   <p className="font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
                     {course.title}

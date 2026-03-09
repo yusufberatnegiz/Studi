@@ -97,8 +97,8 @@ export default function SourceUploadForm({ courseId, action }: Props) {
       <button
         type="submit"
         disabled={isPending || fileNames.length === 0 || tooLarge}
-        className="px-4 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white
-          hover:bg-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white
+          hover:bg-emerald-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {isPending ? "Uploading…" : "Upload"}
       </button>

@@ -76,20 +76,20 @@ export default async function TopicsPage({
         <div className="flex items-end justify-between gap-4">
           <h1 className="text-2xl font-bold text-gray-900">Topics</h1>
           {overallAccuracy !== null && (
-            <p className="text-sm text-gray-400 shrink-0 pb-0.5">
-              {totalAnswered} answered ·{" "}
+            <div className="flex items-center gap-2 shrink-0 pb-0.5">
+              <span className="text-sm text-gray-400">{totalAnswered} answered</span>
               <span
-                className={`font-medium ${
-                  overallAccuracy >= 80
-                    ? "text-green-600"
+                className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                  overallAccuracy >= 75
+                    ? "bg-emerald-50 text-emerald-700"
                     : overallAccuracy >= 50
-                    ? "text-amber-500"
-                    : "text-red-500"
+                    ? "bg-amber-50 text-amber-700"
+                    : "bg-red-50 text-red-700"
                 }`}
               >
                 {overallAccuracy}%
               </span>
-            </p>
+            </div>
           )}
         </div>
       </div>
