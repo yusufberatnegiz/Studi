@@ -156,11 +156,11 @@ export default async function CourseDetailPage({
       {/* Breadcrumb + title */}
       <div>
         <div className="flex items-center gap-2 text-sm mb-3">
-          <Link href="/app" className="text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+          <Link href="/app" className="text-gray-400 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">
             Dashboard
           </Link>
-          <span className="text-gray-200 dark:text-gray-700">/</span>
-          <span className="text-gray-500 dark:text-gray-400 truncate max-w-[240px]">{course.title}</span>
+          <span className="text-gray-200 dark:text-zinc-700">/</span>
+          <span className="text-gray-500 dark:text-zinc-400 truncate max-w-[240px]">{course.title}</span>
         </div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{course.title}</h1>
       </div>
@@ -196,23 +196,23 @@ export default async function CourseDetailPage({
           <Link
             key={s.href}
             href={s.href}
-            className={`group flex items-center gap-4 bg-white dark:bg-[#1a1d26] rounded-xl border border-gray-100 dark:border-[#252838] px-5 py-4 ${s.hoverClass} transition-colors`}
+            className={`group flex items-center gap-4 bg-white dark:bg-zinc-800 rounded-xl border border-gray-100 dark:border-zinc-700 px-5 py-4 ${s.hoverClass} transition-colors`}
           >
             <div className={`shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${s.iconBg} ${s.iconColor}`}>
               {s.icon}
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-gray-900 dark:text-white text-sm">{s.label}</p>
-              <p className="text-xs text-gray-400 dark:text-gray-400 mt-0.5 truncate">{s.description}</p>
+              <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5 truncate">{s.description}</p>
             </div>
             <div className="shrink-0 flex items-center gap-3">
               {s.meta && (
-                <span className="text-xs text-gray-400 dark:text-gray-400 tabular-nums">{s.meta}</span>
+                <span className="text-xs text-gray-400 dark:text-zinc-400 tabular-nums">{s.meta}</span>
               )}
               <svg
                 width="14" height="14" viewBox="0 0 14 14" fill="none"
                 stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-                className="text-gray-300 dark:text-gray-500 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors"
+                className="text-gray-300 dark:text-zinc-500 group-hover:text-gray-500 dark:group-hover:text-zinc-400 transition-colors"
               >
                 <polyline points="5 3 9 7 5 11" />
               </svg>
@@ -223,15 +223,15 @@ export default async function CourseDetailPage({
 
       {/* Topic performance bars */}
       {topicBars.length > 0 && (
-        <section className="space-y-4 pt-2 border-t border-gray-100 dark:border-[#252838]">
+        <section className="space-y-4 pt-2 border-t border-gray-100 dark:border-zinc-700">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wide">
+            <h2 className="text-xs font-semibold text-gray-400 dark:text-zinc-400 uppercase tracking-wide">
               Topic Performance
             </h2>
             {topicStats.length > 5 && (
               <Link
                 href={`/app/courses/${courseId}/topics`}
-                className="text-xs text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                className="text-xs text-gray-400 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-300 transition-colors"
               >
                 View all →
               </Link>
@@ -245,9 +245,9 @@ export default async function CourseDetailPage({
               return (
                 <div key={t.topic} className="space-y-1.5">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm text-gray-700 dark:text-gray-300 truncate min-w-0">{t.topic}</span>
+                    <span className="text-sm text-gray-700 dark:text-zinc-300 truncate min-w-0">{t.topic}</span>
                     <div className="shrink-0 flex items-center gap-3">
-                      <span className="text-xs text-gray-400 dark:text-gray-400 tabular-nums">
+                      <span className="text-xs text-gray-400 dark:text-zinc-400 tabular-nums">
                         {t.attempts} {t.attempts === 1 ? "attempt" : "attempts"}
                       </span>
                       <span className={`text-xs font-semibold tabular-nums w-8 text-right ${textColor}`}>
@@ -255,7 +255,7 @@ export default async function CourseDetailPage({
                       </span>
                     </div>
                   </div>
-                  <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full bg-gray-100 dark:bg-zinc-700 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all ${barColor}`}
                       style={{ width: `${pct}%` }}
@@ -275,7 +275,7 @@ export default async function CourseDetailPage({
             <p className="text-sm font-semibold text-gray-900 dark:text-white">
               {weakCount} weak {weakCount === 1 ? "topic" : "topics"} need attention
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-xs text-gray-500 dark:text-zinc-400 mt-0.5">
               Generate a targeted practice set focused on your weakest areas.
             </p>
           </div>
@@ -289,34 +289,34 @@ export default async function CourseDetailPage({
 
       {/* Recent practice */}
       {recentSets.length > 0 && (
-        <section className="space-y-4 pt-2 border-t border-gray-100 dark:border-[#252838]">
+        <section className="space-y-4 pt-2 border-t border-gray-100 dark:border-zinc-700">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wide">
+            <h2 className="text-xs font-semibold text-gray-400 dark:text-zinc-400 uppercase tracking-wide">
               Recent Practice
             </h2>
             <Link
               href={`/app/courses/${courseId}/sets`}
-              className="text-xs text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              className="text-xs text-gray-400 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-300 transition-colors"
             >
               View all →
             </Link>
           </div>
-          <div className="divide-y divide-gray-100 dark:divide-[#252838] rounded-xl border border-gray-100 dark:border-[#252838] overflow-hidden">
+          <div className="divide-y divide-gray-100 dark:divide-zinc-700 rounded-xl border border-gray-100 dark:border-zinc-700 overflow-hidden">
             {recentSets.map((qs) => (
               <div
                 key={qs.id}
-                className="flex items-center justify-between px-4 py-3 gap-4 bg-white dark:bg-[#1a1d26]"
+                className="flex items-center justify-between px-4 py-3 gap-4 bg-white dark:bg-zinc-800"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-400 truncate">{qs.title}</p>
+                    <p className="text-sm font-medium text-gray-800 dark:text-zinc-400 truncate">{qs.title}</p>
                     {qs.mode === "weak_topics" && (
                       <span className="shrink-0 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 uppercase tracking-wide">
                         Weak
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-400 dark:text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5">
                     {qs.questionCount} {qs.questionCount === 1 ? "question" : "questions"} &middot;{" "}
                     {new Date(qs.created_at).toLocaleDateString()}
                   </p>
@@ -368,14 +368,14 @@ function StatChip({
 }) {
   const style = accent ? ACCENT_STYLES[accent] : null;
   return (
-    <div className={`rounded-xl border px-4 py-3 ${style?.bg ?? "bg-white dark:bg-[#1a1d26] border-gray-100 dark:border-[#252838]"}`}>
-      <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wide mb-1">
+    <div className={`rounded-xl border px-4 py-3 ${style?.bg ?? "bg-white dark:bg-zinc-800 border-gray-100 dark:border-zinc-700"}`}>
+      <p className="text-[10px] font-semibold text-gray-400 dark:text-zinc-400 uppercase tracking-wide mb-1">
         {label}
       </p>
       <p className={`text-xl font-bold tabular-nums leading-tight ${style?.value ?? "text-gray-900 dark:text-white"}`}>
         {value}
       </p>
-      <p className="text-xs text-gray-400 dark:text-gray-400 mt-0.5">{sub}</p>
+      <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5">{sub}</p>
     </div>
   );
 }

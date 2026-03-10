@@ -86,19 +86,19 @@ export default function Sidebar({
 
   if (!mounted) {
     return (
-      <aside className={`shrink-0 bg-white dark:bg-[#0c0e14] border-r border-gray-100 dark:border-[#1e2235] h-screen sticky top-0 ${collapsed ? "w-14" : "w-56"}`} />
+      <aside className={`shrink-0 bg-white dark:bg-zinc-950 border-r border-gray-100 dark:border-zinc-800 h-screen sticky top-0 ${collapsed ? "w-14" : "w-56"}`} />
     );
   }
 
   return (
     <aside
-      className={`shrink-0 flex flex-col bg-white dark:bg-[#0c0e14] border-r border-gray-100 dark:border-[#1e2235] h-screen sticky top-0 transition-[width] duration-200 ease-in-out ${
+      className={`shrink-0 flex flex-col bg-white dark:bg-zinc-950 border-r border-gray-100 dark:border-zinc-800 h-screen sticky top-0 transition-[width] duration-200 ease-in-out ${
         collapsed ? "w-14" : "w-56"
       }`}
     >
       {/* ── Logo row ─────────────────────────────────────────────────────── */}
       <div
-        className={`h-14 flex items-center shrink-0 border-b border-gray-100 dark:border-[#1e2235] ${
+        className={`h-14 flex items-center shrink-0 border-b border-gray-100 dark:border-zinc-800 ${
           collapsed ? "justify-center px-2" : "px-4"
         }`}
       >
@@ -106,7 +106,7 @@ export default function Sidebar({
           <button
             onClick={toggle}
             title="Expand sidebar"
-            className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-white/8 transition-colors"
+            className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
           >
             <img src="/logo.png" alt="Exai" className="h-5 w-5 object-contain" />
           </button>
@@ -121,7 +121,7 @@ export default function Sidebar({
             <button
               onClick={toggle}
               title="Collapse sidebar"
-              className="shrink-0 flex items-center justify-center w-7 h-7 rounded-md text-gray-300 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/8 transition-colors"
+              className="shrink-0 flex items-center justify-center w-7 h-7 rounded-md text-gray-300 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
             >
               <IconCollapse />
             </button>
@@ -141,7 +141,7 @@ export default function Sidebar({
               className={`flex items-center justify-center w-9 h-9 mx-auto rounded-lg transition-colors ${
                 dashActive
                   ? "bg-blue-500/15 text-blue-400"
-                  : "text-gray-400 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
+                  : "text-gray-400 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-gray-700 dark:hover:text-white"
               }`}
             >
               <IconDashboard />
@@ -152,7 +152,7 @@ export default function Sidebar({
               className={`flex items-center gap-2.5 px-3 py-[7px] rounded-lg text-[13.5px] font-medium transition-colors ${
                 dashActive
                   ? "bg-blue-500/10 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300"
-                  : "text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-800 dark:hover:text-white"
+                  : "text-gray-500 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-gray-800 dark:hover:text-white"
               }`}
             >
               <span className="shrink-0 opacity-80"><IconDashboard /></span>
@@ -165,7 +165,7 @@ export default function Sidebar({
         {courses.length > 0 && (
           <div className="mt-5">
             {!collapsed && (
-              <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-3 mb-1.5">
+              <p className="text-[10px] font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-widest px-3 mb-1.5">
                 Courses
               </p>
             )}
@@ -181,7 +181,7 @@ export default function Sidebar({
                       className={`flex items-center justify-center w-9 h-8 mx-auto rounded-lg transition-colors ${
                         active
                           ? "bg-blue-500/15 text-blue-400"
-                          : "text-gray-400 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
+                          : "text-gray-400 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-gray-700 dark:hover:text-white"
                       }`}
                     >
                       <span className="text-[11px] font-bold uppercase leading-none">
@@ -197,7 +197,7 @@ export default function Sidebar({
                     className={`flex items-center px-3 py-[6px] rounded-lg text-[13px] transition-colors min-w-0 ${
                       active
                         ? "bg-blue-500/10 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 font-medium"
-                        : "text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-800 dark:hover:text-white"
+                        : "text-gray-500 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-gray-800 dark:hover:text-white"
                     }`}
                   >
                     <span className="truncate">{course.title}</span>
@@ -210,7 +210,7 @@ export default function Sidebar({
       </nav>
 
       {/* ── Settings link ────────────────────────────────────────────────── */}
-      <div className="border-t border-gray-100 dark:border-[#1e2235] shrink-0 px-2 py-2">
+      <div className="border-t border-gray-100 dark:border-zinc-800 shrink-0 px-2 py-2">
         {collapsed ? (
           <Link
             href="/app/settings"
@@ -218,7 +218,7 @@ export default function Sidebar({
             className={`flex items-center justify-center w-9 h-9 mx-auto rounded-lg transition-colors ${
               settingsActive
                 ? "bg-blue-500/15 text-blue-400"
-                : "text-gray-400 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
+                : "text-gray-400 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-gray-700 dark:hover:text-white"
             }`}
           >
             <IconSettings />
@@ -229,7 +229,7 @@ export default function Sidebar({
             className={`flex items-center gap-2.5 px-3 py-[7px] rounded-lg text-[13.5px] font-medium transition-colors ${
               settingsActive
                 ? "bg-blue-500/10 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300"
-                : "text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-800 dark:hover:text-white"
+                : "text-gray-500 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-gray-800 dark:hover:text-white"
             }`}
           >
             <span className="shrink-0 opacity-80"><IconSettings /></span>
@@ -240,7 +240,7 @@ export default function Sidebar({
 
       {/* ── Account block ────────────────────────────────────────────────── */}
       <div
-        className={`border-t border-gray-100 dark:border-[#1e2235] shrink-0 ${
+        className={`border-t border-gray-100 dark:border-zinc-800 shrink-0 ${
           collapsed ? "p-2" : "px-3 py-3"
         }`}
       >
@@ -248,24 +248,24 @@ export default function Sidebar({
           <button
             onClick={handleSignOut}
             title="Sign out"
-            className="flex items-center justify-center w-9 h-9 mx-auto rounded-lg text-gray-400 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="flex items-center justify-center w-9 h-9 mx-auto rounded-lg text-gray-400 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors"
           >
             <IconSignOut />
           </button>
         ) : (
           <div className="flex items-center gap-2.5 px-1">
-            <div className="shrink-0 w-6 h-6 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center">
-              <span className="text-[10px] font-semibold text-gray-500 dark:text-gray-300 uppercase leading-none">
+            <div className="shrink-0 w-6 h-6 rounded-full bg-gray-100 dark:bg-zinc-700 flex items-center justify-center">
+              <span className="text-[10px] font-semibold text-gray-500 dark:text-zinc-300 uppercase leading-none">
                 {initial}
               </span>
             </div>
-            <p className="flex-1 text-[12px] text-gray-400 dark:text-gray-400 truncate min-w-0">
+            <p className="flex-1 text-[12px] text-gray-400 dark:text-zinc-400 truncate min-w-0">
               {userEmail}
             </p>
             <button
               onClick={handleSignOut}
               title="Sign out"
-              className="shrink-0 flex items-center justify-center w-6 h-6 rounded-md text-gray-300 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/8 transition-colors"
+              className="shrink-0 flex items-center justify-center w-6 h-6 rounded-md text-gray-300 dark:text-zinc-500 hover:text-gray-500 dark:hover:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
             >
               <IconSignOut />
             </button>

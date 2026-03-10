@@ -221,14 +221,14 @@ export default function PracticeClient({
   const needsAiGrade = q.question_type === "open" || q.question_type === "coding";
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col">
       <PracticeNav questionSet={questionSet} index={index} total={total} />
 
       <main className="flex-1 flex flex-col items-center px-4 sm:px-6 py-8">
         {/* Progress indicator */}
         <div className="w-full max-w-[720px] mb-6 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span className="text-sm font-medium text-gray-700 dark:text-zinc-300">
               Question {index + 1}
               <span className="text-gray-400 font-normal"> / {total}</span>
             </span>
@@ -236,7 +236,7 @@ export default function PracticeClient({
               {Math.round(((index + 1) / total) * 100)}%
             </span>
           </div>
-          <div className="h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-1.5 w-full bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">
             <div
               className="h-full bg-blue-500 rounded-full transition-all duration-300"
               style={{ width: `${((index + 1) / total) * 100}%` }}
@@ -245,8 +245,8 @@ export default function PracticeClient({
         </div>
 
         {/* Question card */}
-        <div className="w-full max-w-[720px] bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-none overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between gap-3">
+        <div className="w-full max-w-[720px] bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm dark:shadow-none overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-100 dark:border-zinc-700 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
               <span className="text-sm font-bold text-gray-900 shrink-0">Q{index + 1}</span>
               {q.topic && (

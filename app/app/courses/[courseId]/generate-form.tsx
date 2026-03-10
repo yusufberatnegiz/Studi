@@ -53,7 +53,7 @@ export default function GenerateForm({ courseId, action }: Props) {
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={isPending}
-            className="px-3 py-1.5 text-sm border border-gray-200 dark:border-[#252838] rounded-lg bg-white dark:bg-[#1a1d26] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#22263a] transition-colors disabled:opacity-40"
+            className="px-3 py-1.5 text-sm border border-gray-200 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40"
           >
             Choose files
           </button>
@@ -196,7 +196,7 @@ function CountStepper({
         type="button"
         disabled={disabled || value <= min}
         onClick={() => onChange(Math.max(min, value - 1))}
-        className="w-6 h-6 flex items-center justify-center rounded border border-gray-200 dark:border-[#252838] bg-white dark:bg-[#1a1d26] text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#22263a] disabled:opacity-30 text-base leading-none select-none"
+        className="w-6 h-6 flex items-center justify-center rounded border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:bg-gray-50 dark:hover:bg-zinc-700 disabled:opacity-30 text-base leading-none select-none"
       >
         −
       </button>
@@ -207,7 +207,7 @@ function CountStepper({
         type="button"
         disabled={disabled || value >= max}
         onClick={() => onChange(Math.min(max, value + 1))}
-        className="w-6 h-6 flex items-center justify-center rounded border border-gray-200 dark:border-[#252838] bg-white dark:bg-[#1a1d26] text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#22263a] disabled:opacity-30 text-base leading-none select-none"
+        className="w-6 h-6 flex items-center justify-center rounded border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:bg-gray-50 dark:hover:bg-zinc-700 disabled:opacity-30 text-base leading-none select-none"
       >
         +
       </button>

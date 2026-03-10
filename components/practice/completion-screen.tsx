@@ -46,7 +46,7 @@ export default function CompletionScreen({
   const weakTopics = topicBreakdown.filter((t) => t.accuracy < 0.8);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col">
       <PracticeNav questionSet={questionSet} index={total} total={total} />
       <main className="flex-1 flex items-center justify-center px-6 py-16">
         <div className="max-w-md w-full space-y-8">

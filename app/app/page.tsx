@@ -82,7 +82,7 @@ export default async function AppPage() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
           <p className="mt-1 text-sm text-gray-400 dark:text-white0">
             Plan:{" "}
-            <span className="text-gray-600 dark:text-gray-300 font-medium capitalize">
+            <span className="text-gray-600 dark:text-zinc-300 font-medium capitalize">
               {profile?.plan ?? "free"}
             </span>
           </p>
@@ -126,7 +126,7 @@ export default async function AppPage() {
           <h2 className="text-xs font-semibold text-gray-400 dark:text-white0 uppercase tracking-wide mb-3">
             Continue Practicing
           </h2>
-          <div className="bg-white dark:bg-[#1a1d26] rounded-xl border border-gray-100 dark:border-[#252838] p-5 flex items-center justify-between gap-4">
+          <div className="bg-white dark:bg-zinc-800 rounded-xl border border-gray-100 dark:border-zinc-700 p-5 flex items-center justify-between gap-4">
             <div className="min-w-0">
               <p className="text-xs text-gray-400 dark:text-white0 truncate">
                 {Array.isArray(continueset.courses) && continueset.courses.length > 0
@@ -167,7 +167,7 @@ export default async function AppPage() {
           <h2 className="text-xs font-semibold text-gray-400 dark:text-white0 uppercase tracking-wide mb-3">
             Recent Practice
           </h2>
-          <div className="divide-y divide-gray-100 dark:divide-[#252838] rounded-xl border border-gray-100 dark:border-[#252838] bg-white dark:bg-[#1a1d26]">
+          <div className="divide-y divide-gray-100 dark:divide-zinc-700 rounded-xl border border-gray-100 dark:border-zinc-700 bg-white dark:bg-zinc-800">
             {recentSets.map((qs) => {
               const count =
                 Array.isArray(qs.questions) && qs.questions.length > 0
@@ -183,7 +183,7 @@ export default async function AppPage() {
                   className="flex items-center justify-between px-4 py-3 gap-4"
                 >
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-400 truncate">
+                    <p className="text-sm font-medium text-gray-800 dark:text-zinc-400 truncate">
                       {qs.title}
                     </p>
                     <p className="text-xs text-gray-400 dark:text-white0 mt-0.5">
@@ -232,9 +232,9 @@ export default async function AppPage() {
                 <Link
                   key={course.id}
                   href={`/app/courses/${course.id}`}
-                  className="group block bg-white dark:bg-[#1a1d26] rounded-xl border border-gray-100 dark:border-[#252838] p-5 hover:border-blue-200 dark:hover:border-blue-700 hover:bg-blue-50/40 dark:hover:bg-blue-900/20 transition-colors"
+                  className="group block bg-white dark:bg-zinc-800 rounded-xl border border-gray-100 dark:border-zinc-700 p-5 hover:border-blue-200 dark:hover:border-blue-700 hover:bg-blue-50/40 dark:hover:bg-blue-900/20 transition-colors"
                 >
-                  <p className="font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors truncate">
+                  <p className="font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-zinc-200 transition-colors truncate">
                     {course.title}
                   </p>
                   <div className="flex items-center gap-3 mt-2.5 text-xs text-gray-400 dark:text-white0">
@@ -262,7 +262,7 @@ export default async function AppPage() {
         <h2 className="text-xs font-semibold text-gray-400 dark:text-white0 uppercase tracking-wide mb-3">
           New Course
         </h2>
-        <div className="bg-white dark:bg-[#1a1d26] rounded-xl border border-gray-100 dark:border-[#252838] p-5">
+        <div className="bg-white dark:bg-zinc-800 rounded-xl border border-gray-100 dark:border-zinc-700 p-5">
           <CreateCourseForm action={createCourse} />
         </div>
       </section>
@@ -291,7 +291,7 @@ function StatCard({
       : "text-gray-900 dark:text-white";
 
   return (
-    <div className="bg-white dark:bg-[#1a1d26] rounded-xl border border-gray-100 dark:border-[#252838] px-4 py-4">
+    <div className="bg-white dark:bg-zinc-800 rounded-xl border border-gray-100 dark:border-zinc-700 px-4 py-4">
       <p className={`text-2xl font-bold tabular-nums ${valueColor}`}>{value}</p>
       <p className="text-xs text-gray-400 dark:text-white0 mt-1">{label}</p>
     </div>
