@@ -16,7 +16,7 @@ export default function PracticeNav({
         <div className="flex items-center gap-2 min-w-0 text-sm">
           <Link
             href={`/app/courses/${questionSet.courseId}`}
-            className="text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors shrink-0 truncate max-w-[120px]"
+            className="text-gray-400 dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-300 transition-colors shrink-0 truncate max-w-[120px]"
           >
             {questionSet.courseTitle}
           </Link>
@@ -25,7 +25,7 @@ export default function PracticeNav({
             {questionSet.title}
           </span>
         </div>
-        <span className="shrink-0 text-sm font-medium text-gray-400 dark:text-gray-400 tabular-nums">
+        <span className="shrink-0 text-sm font-medium text-gray-400 dark:text-gray-200 tabular-nums">
           {Math.min(index + 1, total)} / {total}
         </span>
       </div>

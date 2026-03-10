@@ -156,11 +156,11 @@ export default async function CourseDetailPage({
       {/* Breadcrumb + title */}
       <div>
         <div className="flex items-center gap-2 text-sm mb-3">
-          <Link href="/app" className="text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+          <Link href="/app" className="text-gray-400 dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
             Dashboard
           </Link>
           <span className="text-gray-200 dark:text-gray-700">/</span>
-          <span className="text-gray-500 dark:text-gray-400 truncate max-w-[240px]">{course.title}</span>
+          <span className="text-gray-500 dark:text-gray-200 truncate max-w-[240px]">{course.title}</span>
         </div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{course.title}</h1>
       </div>
@@ -203,11 +203,11 @@ export default async function CourseDetailPage({
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-gray-900 dark:text-white text-sm">{s.label}</p>
-              <p className="text-xs text-gray-400 dark:text-gray-400 mt-0.5 truncate">{s.description}</p>
+              <p className="text-xs text-gray-400 dark:text-gray-200 mt-0.5 truncate">{s.description}</p>
             </div>
             <div className="shrink-0 flex items-center gap-3">
               {s.meta && (
-                <span className="text-xs text-gray-400 dark:text-gray-400 tabular-nums">{s.meta}</span>
+                <span className="text-xs text-gray-400 dark:text-gray-200 tabular-nums">{s.meta}</span>
               )}
               <svg
                 width="14" height="14" viewBox="0 0 14 14" fill="none"
@@ -225,13 +225,13 @@ export default async function CourseDetailPage({
       {topicBars.length > 0 && (
         <section className="space-y-4 pt-2 border-t border-gray-100 dark:border-[#252838]">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wide">
+            <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-200 uppercase tracking-wide">
               Topic Performance
             </h2>
             {topicStats.length > 5 && (
               <Link
                 href={`/app/courses/${courseId}/topics`}
-                className="text-xs text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                className="text-xs text-gray-400 dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
               >
                 View all →
               </Link>
@@ -247,7 +247,7 @@ export default async function CourseDetailPage({
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-sm text-gray-700 dark:text-gray-300 truncate min-w-0">{t.topic}</span>
                     <div className="shrink-0 flex items-center gap-3">
-                      <span className="text-xs text-gray-400 dark:text-gray-400 tabular-nums">
+                      <span className="text-xs text-gray-400 dark:text-gray-200 tabular-nums">
                         {t.attempts} {t.attempts === 1 ? "attempt" : "attempts"}
                       </span>
                       <span className={`text-xs font-semibold tabular-nums w-8 text-right ${textColor}`}>
@@ -275,7 +275,7 @@ export default async function CourseDetailPage({
             <p className="text-sm font-semibold text-gray-900 dark:text-white">
               {weakCount} weak {weakCount === 1 ? "topic" : "topics"} need attention
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-xs text-gray-500 dark:text-gray-200 mt-0.5">
               Generate a targeted practice set focused on your weakest areas.
             </p>
           </div>
@@ -291,12 +291,12 @@ export default async function CourseDetailPage({
       {recentSets.length > 0 && (
         <section className="space-y-4 pt-2 border-t border-gray-100 dark:border-[#252838]">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wide">
+            <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-200 uppercase tracking-wide">
               Recent Practice
             </h2>
             <Link
               href={`/app/courses/${courseId}/sets`}
-              className="text-xs text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              className="text-xs text-gray-400 dark:text-gray-200 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
             >
               View all →
             </Link>
@@ -316,7 +316,7 @@ export default async function CourseDetailPage({
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-400 dark:text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-400 dark:text-gray-200 mt-0.5">
                     {qs.questionCount} {qs.questionCount === 1 ? "question" : "questions"} &middot;{" "}
                     {new Date(qs.created_at).toLocaleDateString()}
                   </p>
@@ -369,13 +369,13 @@ function StatChip({
   const style = accent ? ACCENT_STYLES[accent] : null;
   return (
     <div className={`rounded-xl border px-4 py-3 ${style?.bg ?? "bg-white dark:bg-[#1a1d26] border-gray-100 dark:border-[#252838]"}`}>
-      <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wide mb-1">
+      <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-200 uppercase tracking-wide mb-1">
         {label}
       </p>
       <p className={`text-xl font-bold tabular-nums leading-tight ${style?.value ?? "text-gray-900 dark:text-white"}`}>
         {value}
       </p>
-      <p className="text-xs text-gray-400 dark:text-gray-400 mt-0.5">{sub}</p>
+      <p className="text-xs text-gray-400 dark:text-gray-200 mt-0.5">{sub}</p>
     </div>
   );
 }

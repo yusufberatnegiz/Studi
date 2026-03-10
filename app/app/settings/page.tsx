@@ -21,7 +21,7 @@ export default async function SettingsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
-        <p className="mt-1 text-sm text-gray-400 dark:text-gray-400">
+        <p className="mt-1 text-sm text-gray-400 dark:text-gray-200">
           Manage your account and preferences.
         </p>
       </div>
@@ -35,7 +35,7 @@ export default async function SettingsPage() {
           <div className="flex items-center justify-between gap-6">
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Theme</p>
-              <p className="text-xs text-gray-400 dark:text-gray-400 mt-0.5">
+              <p className="text-xs text-gray-400 dark:text-gray-200 mt-0.5">
                 Choose between light, dark, or follow your system setting.
               </p>
             </div>
@@ -51,13 +51,13 @@ export default async function SettingsPage() {
         </div>
         <div className="divide-y divide-gray-100 dark:divide-[#252838]">
           <div className="px-5 py-4 flex items-center justify-between">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
+            <p className="text-sm text-gray-500 dark:text-gray-200">Email</p>
             <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
               {user.email ?? "—"}
             </p>
           </div>
           <div className="px-5 py-4 flex items-center justify-between">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Plan</p>
+            <p className="text-sm text-gray-500 dark:text-gray-200">Plan</p>
             <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 capitalize">
               {profile?.plan ?? "free"}
             </span>

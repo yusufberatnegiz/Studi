@@ -141,7 +141,7 @@ export default function Sidebar({
               className={`flex items-center justify-center w-9 h-9 mx-auto rounded-lg transition-colors ${
                 dashActive
                   ? "bg-blue-500/15 text-blue-400"
-                  : "text-gray-400 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
+                  : "text-gray-400 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
               }`}
             >
               <IconDashboard />
@@ -181,7 +181,7 @@ export default function Sidebar({
                       className={`flex items-center justify-center w-9 h-8 mx-auto rounded-lg transition-colors ${
                         active
                           ? "bg-blue-500/15 text-blue-400"
-                          : "text-gray-400 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
+                          : "text-gray-400 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
                       }`}
                     >
                       <span className="text-[11px] font-bold uppercase leading-none">
@@ -218,7 +218,7 @@ export default function Sidebar({
             className={`flex items-center justify-center w-9 h-9 mx-auto rounded-lg transition-colors ${
               settingsActive
                 ? "bg-blue-500/15 text-blue-400"
-                : "text-gray-400 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
+                : "text-gray-400 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-700 dark:hover:text-white"
             }`}
           >
             <IconSettings />
@@ -248,7 +248,7 @@ export default function Sidebar({
           <button
             onClick={handleSignOut}
             title="Sign out"
-            className="flex items-center justify-center w-9 h-9 mx-auto rounded-lg text-gray-400 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="flex items-center justify-center w-9 h-9 mx-auto rounded-lg text-gray-400 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/8 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
             <IconSignOut />
           </button>
@@ -259,7 +259,7 @@ export default function Sidebar({
                 {initial}
               </span>
             </div>
-            <p className="flex-1 text-[12px] text-gray-400 dark:text-gray-400 truncate min-w-0">
+            <p className="flex-1 text-[12px] text-gray-400 dark:text-gray-200 truncate min-w-0">
               {userEmail}
             </p>
             <button
