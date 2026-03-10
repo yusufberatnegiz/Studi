@@ -37,14 +37,14 @@ function gradeTf(
   let correct: string;
 
   if (correctAnswer) {
-    // Reliable: use stored correct_answer
+    // Reliable: normalized comparison against stored correct_answer
     correct = correctAnswer.trim();
   } else {
     // Legacy fallback: infer from solution_text
     correct = solutionText.trim().toLowerCase().startsWith("true") ? "True" : "False";
   }
 
-  const is_correct = answerText.trim() === correct;
+  const is_correct = normalize(answerText) === normalize(correct);
   return {
     is_correct,
     score: is_correct ? 100 : 0,

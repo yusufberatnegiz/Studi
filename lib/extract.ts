@@ -101,15 +101,9 @@ export async function extractTextFromDocx(
     const m = mod as ReturnType<typeof Object.create>;
     const extractRawText: (input: { buffer: Buffer }) => Promise<{ value: string }> =
       m.default?.extractRawText ?? m.extractRawText;
-    console.log("[DOCX] extractRawText:", typeof extractRawText);
     // Pass a Node.js Buffer (not ArrayBuffer) — more reliable across mammoth versions
     const result = await extractRawText({ buffer: Buffer.from(buffer) });
     const raw = result.value ?? "";
-    console.log(
-      "[DOCX] raw length:", raw.length,
-      "non-ws chars:", raw.replace(/\s/g, "").length,
-      "preview:", JSON.stringify(raw.slice(0, 120))
-    );
     return raw;
   } catch (err) {
     console.error("[DOCX] extractTextFromDocx threw:", err);
