@@ -10,8 +10,10 @@ export default function PracticeNav({
   index: number;
   total: number;
 }) {
+  const pct = Math.min(Math.round(((index + 1) / total) * 100), 100);
+
   return (
-    <nav className="bg-white dark:bg-zinc-950 border-b border-gray-100 dark:border-zinc-700 shrink-0">
+    <nav className="bg-white dark:bg-zinc-950 border-b border-gray-100 dark:border-zinc-800 shrink-0">
       <div className="max-w-[720px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 min-w-0 text-sm">
           <Link
@@ -28,6 +30,13 @@ export default function PracticeNav({
         <span className="shrink-0 text-sm font-medium text-gray-400 dark:text-zinc-400 tabular-nums">
           {Math.min(index + 1, total)} / {total}
         </span>
+      </div>
+      {/* Progress bar — full width, flush under nav border */}
+      <div className="h-0.5 w-full bg-gray-100 dark:bg-zinc-800">
+        <div
+          className="h-full bg-blue-500 transition-all duration-300"
+          style={{ width: `${pct}%` }}
+        />
       </div>
     </nav>
   );

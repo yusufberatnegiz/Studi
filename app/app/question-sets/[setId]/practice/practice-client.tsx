@@ -225,32 +225,13 @@ export default function PracticeClient({
       <PracticeNav questionSet={questionSet} index={index} total={total} />
 
       <main className="flex-1 flex flex-col items-center px-4 sm:px-6 py-8">
-        {/* Progress indicator */}
-        <div className="w-full max-w-[720px] mb-6 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700 dark:text-zinc-300">
-              Question {index + 1}
-              <span className="text-gray-400 font-normal"> / {total}</span>
-            </span>
-            <span className="text-xs text-gray-400 tabular-nums">
-              {Math.round(((index + 1) / total) * 100)}%
-            </span>
-          </div>
-          <div className="h-1.5 w-full bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-blue-500 rounded-full transition-all duration-300"
-              style={{ width: `${((index + 1) / total) * 100}%` }}
-            />
-          </div>
-        </div>
-
         {/* Question card */}
         <div className="w-full max-w-[720px] bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm dark:shadow-none overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 dark:border-zinc-700 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="text-sm font-bold text-gray-900 shrink-0">Q{index + 1}</span>
+              <span className="text-sm font-bold text-gray-900 dark:text-zinc-400 shrink-0">Q{index + 1}</span>
               {q.topic && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 truncate max-w-[220px]">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400 truncate max-w-[220px]">
                   {q.topic}
                 </span>
               )}
@@ -259,7 +240,7 @@ export default function PracticeClient({
           </div>
 
           <div className="px-6 py-6 space-y-5">
-            <p className="text-base font-medium text-gray-900 leading-relaxed">
+            <p className="text-base font-medium text-gray-900 dark:text-zinc-300 leading-relaxed">
               {q.question_text}
             </p>
 
@@ -285,7 +266,6 @@ export default function PracticeClient({
                 >
                   {isPending ? (needsAiGrade ? "Grading…" : "Saving…") : "Submit"}
                 </Button>
-                <KeyHint type={q.question_type} hasAnswer={!!answer} />
               </div>
             )}
           </div>

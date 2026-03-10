@@ -53,7 +53,7 @@ export function AnswerInput({
                 ${
                   selected
                     ? selectedStyles[i]
-                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                    : "border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-gray-600 dark:text-zinc-300 hover:border-gray-300 dark:hover:border-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-600"
                 }
                 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
@@ -77,23 +77,23 @@ export function AnswerInput({
               type="button"
               disabled={disabled}
               onClick={() => onChange(opt)}
-              className={`w-full text-left flex items-start gap-3 px-4 py-3 rounded-xl border-2 transition-all
+              className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all
                 ${
                   selected
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
+                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                    : "border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-600"
                 }
                 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               <span
-                className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mt-0.5
-                  ${selected ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-500"}`}
+                className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold
+                  ${selected ? "bg-blue-500 text-white" : "bg-gray-100 dark:bg-zinc-600 text-gray-500 dark:text-zinc-400"}`}
               >
                 {letter}
               </span>
               <span
                 className={`text-sm leading-relaxed ${
-                  selected ? "text-blue-800 font-medium" : "text-gray-700"
+                  selected ? "text-blue-800 dark:text-blue-300 font-medium" : "text-gray-700 dark:text-zinc-300"
                 }`}
               >
                 {opt}
@@ -147,10 +147,10 @@ function OpenTextarea({
       placeholder="Write your answer here..."
       rows={4}
       style={{ overflow: "hidden" }}
-      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900
-        leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/20
-        focus:border-blue-400 transition-colors placeholder:text-gray-400
-        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50"
+      className="w-full rounded-xl border border-gray-200 dark:border-zinc-600 px-4 py-3 text-sm text-gray-900 dark:text-zinc-300
+        bg-white dark:bg-zinc-700 leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/20
+        focus:border-blue-400 transition-colors placeholder:text-gray-400 dark:placeholder:text-zinc-500
+        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 dark:disabled:bg-zinc-800"
     />
   );
 }

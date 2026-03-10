@@ -200,7 +200,7 @@ function CountStepper({
       >
         −
       </button>
-      <span className="w-5 text-center text-sm font-medium text-gray-800 tabular-nums">
+      <span className="w-5 text-center text-sm font-medium text-gray-800 dark:text-zinc-400 tabular-nums">
         {value}
       </span>
       <button
