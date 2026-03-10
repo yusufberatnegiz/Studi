@@ -79,8 +79,8 @@ export default async function AppPage() {
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">Dashboard</h1>
-          <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Dashboard</h1>
+          <p className="mt-1 text-sm text-gray-400 dark:text-gray-1000">
             Plan:{" "}
             <span className="text-gray-600 dark:text-gray-300 font-medium capitalize">
               {profile?.plan ?? "free"}
@@ -92,7 +92,7 @@ export default async function AppPage() {
       {/* Learning Snapshot */}
       {answered > 0 && (
         <section>
-          <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-1000 uppercase tracking-wide mb-3">
             Learning Snapshot
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -123,20 +123,20 @@ export default async function AppPage() {
       {/* Continue Practicing */}
       {continueset && (
         <section>
-          <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-1000 uppercase tracking-wide mb-3">
             Continue Practicing
           </h2>
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5 flex items-center justify-between gap-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-5 flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
+              <p className="text-xs text-gray-400 dark:text-gray-1000 truncate">
                 {Array.isArray(continueset.courses) && continueset.courses.length > 0
                   ? (continueset.courses[0] as { title: string }).title
                   : "Course"}
               </p>
-              <p className="text-sm font-semibold text-gray-900 dark:text-gray-50 truncate mt-0.5">
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate mt-0.5">
                 {continueset.title}
               </p>
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              <p className="text-xs text-gray-400 dark:text-gray-1000 mt-1">
                 {(Array.isArray(continueset.questions) && continueset.questions.length > 0
                   ? (continueset.questions[0] as { count: number }).count
                   : 0)}{" "}
@@ -164,10 +164,10 @@ export default async function AppPage() {
       {/* Recent Practice */}
       {recentSets && recentSets.length > 0 && (
         <section>
-          <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-1000 uppercase tracking-wide mb-3">
             Recent Practice
           </h2>
-          <div className="divide-y divide-gray-100 dark:divide-gray-800 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+          <div className="divide-y divide-gray-100 dark:divide-gray-700 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800">
             {recentSets.map((qs) => {
               const count =
                 Array.isArray(qs.questions) && qs.questions.length > 0
@@ -186,7 +186,7 @@ export default async function AppPage() {
                     <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
                       {qs.title}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                    <p className="text-xs text-gray-400 dark:text-gray-1000 mt-0.5">
                       {courseTitle} &middot; {count} {count === 1 ? "question" : "questions"}
                     </p>
                   </div>
@@ -213,11 +213,11 @@ export default async function AppPage() {
 
       {/* Your Courses */}
       <section>
-        <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">
+        <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-1000 uppercase tracking-wide mb-3">
           Your Courses
         </h2>
         {!courses || courses.length === 0 ? (
-          <p className="text-sm text-gray-400 dark:text-gray-500">
+          <p className="text-sm text-gray-400 dark:text-gray-1000">
             No courses yet. Create one below.
           </p>
         ) : (
@@ -232,12 +232,12 @@ export default async function AppPage() {
                 <Link
                   key={course.id}
                   href={`/app/courses/${course.id}`}
-                  className="group block bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5 hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50/40 dark:hover:bg-blue-950/30 transition-colors"
+                  className="group block bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-5 hover:border-blue-200 dark:hover:border-blue-700 hover:bg-blue-50/40 dark:hover:bg-blue-900/20 transition-colors"
                 >
-                  <p className="font-semibold text-gray-900 dark:text-gray-50 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors truncate">
+                  <p className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors truncate">
                     {course.title}
                   </p>
-                  <div className="flex items-center gap-3 mt-2.5 text-xs text-gray-400 dark:text-gray-500">
+                  <div className="flex items-center gap-3 mt-2.5 text-xs text-gray-400 dark:text-gray-1000">
                     <span>
                       {setCount} {setCount === 1 ? "set" : "sets"}
                     </span>
@@ -259,10 +259,10 @@ export default async function AppPage() {
 
       {/* New Course */}
       <section>
-        <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">
+        <h2 className="text-xs font-semibold text-gray-400 dark:text-gray-1000 uppercase tracking-wide mb-3">
           New Course
         </h2>
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-5">
           <CreateCourseForm action={createCourse} />
         </div>
       </section>
@@ -288,12 +288,12 @@ function StatCard({
       ? "text-amber-600"
       : highlight === "red"
       ? "text-red-600"
-      : "text-gray-900 dark:text-gray-50";
+      : "text-gray-900 dark:text-gray-100";
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 px-4 py-4">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 px-4 py-4">
       <p className={`text-2xl font-bold tabular-nums ${valueColor}`}>{value}</p>
-      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{label}</p>
+      <p className="text-xs text-gray-400 dark:text-gray-1000 mt-1">{label}</p>
     </div>
   );
 }

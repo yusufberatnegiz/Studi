@@ -22,7 +22,7 @@ export default async function AppLayout({
     .limit(20);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar userEmail={user.email ?? null} courses={courses ?? []} />
       <div className="flex-1 min-w-0 overflow-auto">{children}</div>
     </div>

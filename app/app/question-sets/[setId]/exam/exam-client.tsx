@@ -163,7 +163,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
   // ── Submitting screen ────────────────────────────────────────────────────────
   if (phase === "submitting") {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center gap-4">
         <div className="w-8 h-8 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
         <p className="text-sm text-gray-500">Grading your answers…</p>
       </div>
@@ -173,7 +173,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
   // ── Complete: review mode ────────────────────────────────────────────────────
   if (phase === "complete" && reviewMode) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
         <ExamNav questionSet={questionSet} phase="complete" timeLeft={0} total={total} />
         <main className="max-w-[720px] mx-auto w-full px-4 sm:px-6 py-10 space-y-5">
           <button
@@ -262,7 +262,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
     const weakTopics = topicBreakdown.filter((t) => t.accuracy < 0.8);
 
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
         <ExamNav questionSet={questionSet} phase="complete" timeLeft={0} total={total} />
         <main className="flex-1 flex items-center justify-center px-6 py-16">
           <div className="max-w-md w-full space-y-8">
@@ -336,7 +336,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
   const answer = answers[q.id] ?? "";
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       <ExamNav
         questionSet={questionSet}
         phase="active"

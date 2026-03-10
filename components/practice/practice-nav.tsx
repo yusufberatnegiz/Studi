@@ -11,7 +11,7 @@ export default function PracticeNav({
   total: number;
 }) {
   return (
-    <nav className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 shrink-0">
+    <nav className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-700 shrink-0">
       <div className="max-w-[720px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 min-w-0 text-sm">
           <Link

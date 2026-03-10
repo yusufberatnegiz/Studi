@@ -54,11 +54,11 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="inline-flex gap-1 p-1 rounded-xl bg-gray-100 dark:bg-gray-800">
+      <div className="inline-flex gap-0.5 p-1 rounded-lg bg-gray-100 dark:bg-gray-700">
         {options.map((opt) => (
           <div
             key={opt.value}
-            className="px-3 py-1.5 rounded-lg text-sm text-gray-400 w-[80px] h-[34px]"
+            className="px-3 py-1.5 rounded-md text-sm w-[76px] h-[32px]"
           />
         ))}
       </div>
@@ -66,17 +66,17 @@ export function ThemeToggle() {
   }
 
   return (
-    <div className="inline-flex gap-1 p-1 rounded-xl bg-gray-100 dark:bg-gray-800">
+    <div className="inline-flex gap-0.5 p-1 rounded-lg bg-gray-100 dark:bg-gray-700/60">
       {options.map((opt) => {
         const active = theme === opt.value;
         return (
           <button
             key={opt.value}
             onClick={() => setTheme(opt.value)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium transition-all ${
               active
-                ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-50 shadow-sm"
-                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                ? "bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100 shadow-sm"
+                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-white/60 dark:hover:bg-gray-600/40"
             }`}
           >
             {opt.icon}

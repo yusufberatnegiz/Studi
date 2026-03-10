@@ -47,15 +47,6 @@ function IconCollapse() {
   );
 }
 
-// ── Nav item types ────────────────────────────────────────────────────────────
-
-type NavItem = {
-  label: string;
-  href: string;
-  icon: React.ReactNode;
-  exactMatch?: boolean;
-};
-
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 
 export default function Sidebar({
@@ -89,28 +80,25 @@ export default function Sidebar({
     router.refresh();
   }
 
-  const navItems: NavItem[] = [
-    { label: "Dashboard", href: "/app", icon: <IconDashboard />, exactMatch: true },
-    { label: "Settings", href: "/app/settings", icon: <IconSettings /> },
-  ];
-
   const initial = userEmail?.slice(0, 1).toUpperCase() ?? "?";
+  const dashActive = pathname === "/app";
+  const settingsActive = pathname.startsWith("/app/settings");
 
   if (!mounted) {
     return (
-      <aside className="w-56 shrink-0 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 h-screen sticky top-0" />
+      <aside className="w-56 shrink-0 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-700 h-screen sticky top-0" />
     );
   }
 
   return (
     <aside
-      className={`shrink-0 flex flex-col bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 h-screen sticky top-0 transition-[width] duration-200 ease-in-out ${
+      className={`shrink-0 flex flex-col bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-700 h-screen sticky top-0 transition-[width] duration-200 ease-in-out ${
         collapsed ? "w-14" : "w-56"
       }`}
     >
       {/* ── Logo row ─────────────────────────────────────────────────────── */}
       <div
-        className={`h-14 flex items-center shrink-0 border-b border-gray-100 dark:border-gray-800 ${
+        className={`h-14 flex items-center shrink-0 border-b border-gray-100 dark:border-gray-700 ${
           collapsed ? "justify-center px-2" : "px-4"
         }`}
       >
@@ -118,7 +106,7 @@ export default function Sidebar({
           <button
             onClick={toggle}
             title="Expand sidebar"
-            className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
             <img src="/logo.png" alt="Exai" className="h-5 w-5 object-contain" />
           </button>
@@ -126,14 +114,14 @@ export default function Sidebar({
           <>
             <Link href="/app" className="flex items-center gap-2.5 flex-1 min-w-0">
               <img src="/logo.png" alt="Exai" className="h-6 w-6 object-contain shrink-0" />
-              <span className="text-[15px] font-semibold text-gray-900 dark:text-gray-50 tracking-tight">
+              <span className="text-[15px] font-semibold text-gray-900 dark:text-gray-100 tracking-tight">
                 Exai
               </span>
             </Link>
             <button
               onClick={toggle}
               title="Collapse sidebar"
-              className="shrink-0 flex items-center justify-center w-7 h-7 rounded-md text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="shrink-0 flex items-center justify-center w-7 h-7 rounded-md text-gray-300 dark:text-gray-600 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               <IconCollapse />
             </button>
@@ -142,53 +130,42 @@ export default function Sidebar({
       </div>
 
       {/* ── Nav ──────────────────────────────────────────────────────────── */}
-      <nav className={`flex-1 overflow-y-auto py-3 ${collapsed ? "px-2" : "px-2"}`}>
+      <nav className="flex-1 overflow-y-auto py-3 px-2">
 
-        {/* Primary nav */}
+        {/* Dashboard */}
         <div className="space-y-0.5">
-          {navItems.map((item) => {
-            const active = item.exactMatch
-              ? pathname === item.href
-              : pathname.startsWith(item.href);
-
-            if (collapsed) {
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  title={item.label}
-                  className={`flex items-center justify-center w-9 h-9 mx-auto rounded-lg transition-colors ${
-                    active
-                      ? "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400"
-                      : "text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300"
-                  }`}
-                >
-                  {item.icon}
-                </Link>
-              );
-            }
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-2.5 px-3 py-[7px] rounded-lg text-[13.5px] font-medium transition-colors ${
-                  active
-                    ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
-                    : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200"
-                }`}
-              >
-                <span className="shrink-0 opacity-70">{item.icon}</span>
-                {item.label}
-              </Link>
-            );
-          })}
+          {collapsed ? (
+            <Link
+              href="/app"
+              title="Dashboard"
+              className={`flex items-center justify-center w-9 h-9 mx-auto rounded-lg transition-colors ${
+                dashActive
+                  ? "bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400"
+                  : "text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300"
+              }`}
+            >
+              <IconDashboard />
+            </Link>
+          ) : (
+            <Link
+              href="/app"
+              className={`flex items-center gap-2.5 px-3 py-[7px] rounded-lg text-[13.5px] font-medium transition-colors ${
+                dashActive
+                  ? "bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400"
+                  : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200"
+              }`}
+            >
+              <span className="shrink-0 opacity-70"><IconDashboard /></span>
+              Dashboard
+            </Link>
+          )}
         </div>
 
         {/* Courses */}
         {courses.length > 0 && (
           <div className="mt-5">
             {!collapsed && (
-              <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-600 uppercase tracking-widest px-3 mb-1.5">
+              <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-3 mb-1.5">
                 Courses
               </p>
             )}
@@ -203,8 +180,8 @@ export default function Sidebar({
                       title={course.title}
                       className={`flex items-center justify-center w-9 h-8 mx-auto rounded-lg transition-colors ${
                         active
-                          ? "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400"
-                          : "text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300"
+                          ? "bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400"
+                          : "text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300"
                       }`}
                     >
                       <span className="text-[11px] font-bold uppercase leading-none">
@@ -219,8 +196,8 @@ export default function Sidebar({
                     href={`/app/courses/${course.id}`}
                     className={`flex items-center px-3 py-[6px] rounded-lg text-[13px] transition-colors min-w-0 ${
                       active
-                        ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400 font-medium"
-                        : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200"
+                        ? "bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 font-medium"
+                        : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200"
                     }`}
                   >
                     <span className="truncate">{course.title}</span>
@@ -232,9 +209,38 @@ export default function Sidebar({
         )}
       </nav>
 
+      {/* ── Settings link ────────────────────────────────────────────────── */}
+      <div className={`border-t border-gray-100 dark:border-gray-700 shrink-0 px-2 py-2`}>
+        {collapsed ? (
+          <Link
+            href="/app/settings"
+            title="Settings"
+            className={`flex items-center justify-center w-9 h-9 mx-auto rounded-lg transition-colors ${
+              settingsActive
+                ? "bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400"
+                : "text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300"
+            }`}
+          >
+            <IconSettings />
+          </Link>
+        ) : (
+          <Link
+            href="/app/settings"
+            className={`flex items-center gap-2.5 px-3 py-[7px] rounded-lg text-[13.5px] font-medium transition-colors ${
+              settingsActive
+                ? "bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400"
+                : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200"
+            }`}
+          >
+            <span className="shrink-0 opacity-70"><IconSettings /></span>
+            Settings
+          </Link>
+        )}
+      </div>
+
       {/* ── Account block ────────────────────────────────────────────────── */}
       <div
-        className={`border-t border-gray-100 dark:border-gray-800 shrink-0 ${
+        className={`border-t border-gray-100 dark:border-gray-700 shrink-0 ${
           collapsed ? "p-2" : "px-3 py-3"
         }`}
       >
@@ -242,24 +248,24 @@ export default function Sidebar({
           <button
             onClick={handleSignOut}
             title="Sign out"
-            className="flex items-center justify-center w-9 h-9 mx-auto rounded-lg text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="flex items-center justify-center w-9 h-9 mx-auto rounded-lg text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
             <IconSignOut />
           </button>
         ) : (
           <div className="flex items-center gap-2.5 px-1">
-            <div className="shrink-0 w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-              <span className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase leading-none">
+            <div className="shrink-0 w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+              <span className="text-[10px] font-semibold text-gray-500 dark:text-gray-300 uppercase leading-none">
                 {initial}
               </span>
             </div>
-            <p className="flex-1 text-[12px] text-gray-400 dark:text-gray-500 truncate min-w-0">
+            <p className="flex-1 text-[12px] text-gray-400 dark:text-gray-400 truncate min-w-0">
               {userEmail}
             </p>
             <button
               onClick={handleSignOut}
               title="Sign out"
-              className="shrink-0 flex items-center justify-center w-6 h-6 rounded-md text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="shrink-0 flex items-center justify-center w-6 h-6 rounded-md text-gray-300 dark:text-gray-600 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               <IconSignOut />
             </button>

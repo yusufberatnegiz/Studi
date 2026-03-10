@@ -24,7 +24,7 @@ export default function ReviewScreen({
   onBack,
 }: Props) {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       <PracticeNav questionSet={questionSet} index={total} total={total} />
       <main className="max-w-[720px] mx-auto w-full px-4 sm:px-6 py-10 space-y-5">
         <button
