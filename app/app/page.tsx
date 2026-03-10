@@ -183,7 +183,7 @@ export default async function AppPage() {
                   className="flex items-center justify-between px-4 py-3 gap-4"
                 >
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-gray-800 dark:text-zinc-400 truncate">
+                    <p className="text-sm font-medium text-gray-800 dark:text-zinc-300 truncate">
                       {qs.title}
                     </p>
                     <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5">

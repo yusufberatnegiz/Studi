@@ -57,8 +57,7 @@ export default function CreateCourseForm({ action }: Props) {
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={isPending}
-            className="px-3 py-1.5 text-xs border border-gray-200 rounded-lg
-              hover:bg-gray-50 transition-colors disabled:opacity-40"
+            className="px-3 py-1.5 text-xs border border-gray-200 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40"
           >
             Add source files
           </button>
