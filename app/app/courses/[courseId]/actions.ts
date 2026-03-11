@@ -107,24 +107,74 @@ export async function uploadSourceMaterials(
   } = await supabase.auth.getUser();
   if (!user) return { error: "Not authenticated." };
 
-  const [{ data: course }, { data: profile }] = await Promise.all([
+  const [{ data: course }, { data: profile }, { count: docCount }] = await Promise.all([
     supabase
       .from("courses")
       .select("id, is_premium")
       .eq("id", courseId)
       .eq("user_id", user.id)
       .single(),
-    supabase.from("profiles").select("plan").eq("user_id", user.id).single(),
+    supabase
+      .from("profiles")
+      .select("plan, daily_ocr_count, daily_ocr_date")
+      .eq("user_id", user.id)
+      .single(),
+    supabase
+      .from("documents")
+      .select("id", { count: "exact", head: true })
+      .eq("course_id", courseId),
   ]);
   if (!course) return { error: "Course not found." };
 
   const isAccountPremium = profile?.plan != null && profile.plan !== "free";
   const isPremium = isAccountPremium || (course.is_premium ?? false);
 
+  const imageExts = new Set(["jpg", "jpeg", "png"]);
+  const imageFiles = validFiles.filter((f) =>
+    imageExts.has(f.name.split(".").pop()?.toLowerCase() ?? "")
+  );
+
+  if (!isPremium) {
+    // Materials per course limit (15)
+    if ((docCount ?? 0) + validFiles.length > 15) {
+      const remaining = Math.max(0, 15 - (docCount ?? 0));
+      return {
+        error:
+          remaining === 0
+            ? "This course has reached the 15 material limit. Upgrade to add more."
+            : `This course can only hold ${remaining} more material${remaining === 1 ? "" : "s"} (free plan limit: 15).`,
+      };
+    }
+
+    // Daily OCR limit (10)
+    if (imageFiles.length > 0) {
+      const todayStr = new Date().toISOString().split("T")[0];
+      const isNewDay = !profile?.daily_ocr_date || profile.daily_ocr_date !== todayStr;
+      const usedToday = isNewDay ? 0 : (profile?.daily_ocr_count ?? 0);
+      if (usedToday + imageFiles.length > 10) {
+        const remaining = Math.max(0, 10 - usedToday);
+        return {
+          error: `Daily OCR limit reached. You have ${remaining} image scan${remaining === 1 ? "" : "s"} remaining today.`,
+        };
+      }
+    }
+  }
+
   const errors: string[] = [];
   for (const file of validFiles) {
     const err = await processSourceFile(supabase, file, user.id, courseId, isPremium);
     if (err) errors.push(err);
+  }
+
+  // Increment daily OCR counter for free users
+  if (!isPremium && imageFiles.length > 0) {
+    const todayStr = new Date().toISOString().split("T")[0];
+    const isNewDay = !profile?.daily_ocr_date || profile.daily_ocr_date !== todayStr;
+    const usedToday = isNewDay ? 0 : (profile?.daily_ocr_count ?? 0);
+    await supabase
+      .from("profiles")
+      .update({ daily_ocr_count: usedToday + imageFiles.length, daily_ocr_date: todayStr })
+      .eq("user_id", user.id);
   }
 
   revalidatePath(`/app/courses/${courseId}`);

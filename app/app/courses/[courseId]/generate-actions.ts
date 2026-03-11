@@ -204,7 +204,7 @@ export async function generateQuestions(
       .eq("id", courseId)
       .eq("user_id", user.id)
       .single(),
-    supabase.from("profiles").select("plan").eq("user_id", user.id).single(),
+    supabase.from("profiles").select("plan, daily_gen_count, daily_gen_date, daily_ocr_count, daily_ocr_date").eq("user_id", user.id).single(),
   ]);
   if (!course) return { error: "Course not found." };
 
@@ -212,6 +212,33 @@ export async function generateQuestions(
   const isPremium = isAccountPremium || (course.is_premium ?? false);
   const maxQuestions = isPremium ? PREMIUM_MAX_QUESTIONS : FREE_PLAN_MAX_QUESTIONS;
   const total = Math.min(maxQuestions, Math.max(1, parseInt(formData.get("total") as string) || 5));
+
+  // ── Free-plan: daily generation limit (15) ──────────────────────────────────
+  if (!isPremium) {
+    const todayStr = new Date().toISOString().split("T")[0];
+    const isNewDay = !profile?.daily_gen_date || profile.daily_gen_date !== todayStr;
+    const usedToday = isNewDay ? 0 : (profile?.daily_gen_count ?? 0);
+    if (usedToday >= 15) {
+      return { error: "Daily generation limit reached (15 per day). Try again tomorrow or upgrade." };
+    }
+  }
+
+  // ── Free-plan: daily OCR limit for generate-page images (10) ─────────────────
+  const imageExts = new Set(["jpg", "jpeg", "png"]);
+  const imageFiles = validExamFiles.filter((f) =>
+    imageExts.has(f.name.split(".").pop()?.toLowerCase() ?? "")
+  );
+  if (!isPremium && imageFiles.length > 0) {
+    const todayStr = new Date().toISOString().split("T")[0];
+    const isNewDay = !profile?.daily_ocr_date || profile.daily_ocr_date !== todayStr;
+    const usedToday = isNewDay ? 0 : (profile?.daily_ocr_count ?? 0);
+    if (usedToday + imageFiles.length > 10) {
+      const remaining = Math.max(0, 10 - usedToday);
+      return {
+        error: `Daily OCR limit reached. You have ${remaining} image scan${remaining === 1 ? "" : "s"} remaining today.`,
+      };
+    }
+  }
 
   // Parse explicit type counts from instructions (e.g. "2 tf 2 mcq 1 coding 1 open")
   const parsedCounts = parseTypeCounts(instructions, total);
@@ -367,6 +394,25 @@ export async function generateQuestions(
     console.error("Question insert error:", qError);
     await supabase.from("question_sets").delete().eq("id", questionSetId);
     return { error: "Something went wrong saving your questions. Please try again." };
+  }
+
+  // ── Increment daily counters for free users ──────────────────────────────────
+  if (!isPremium) {
+    const todayStr = new Date().toISOString().split("T")[0];
+    const isNewGenDay = !profile?.daily_gen_date || profile.daily_gen_date !== todayStr;
+    const usedGenToday = isNewGenDay ? 0 : (profile?.daily_gen_count ?? 0);
+    const isNewOcrDay = !profile?.daily_ocr_date || profile.daily_ocr_date !== todayStr;
+    const usedOcrToday = isNewOcrDay ? 0 : (profile?.daily_ocr_count ?? 0);
+    await supabase
+      .from("profiles")
+      .update({
+        daily_gen_count: usedGenToday + 1,
+        daily_gen_date: todayStr,
+        ...(imageFiles.length > 0
+          ? { daily_ocr_count: usedOcrToday + imageFiles.length, daily_ocr_date: todayStr }
+          : {}),
+      })
+      .eq("user_id", user.id);
   }
 
   revalidatePath(`/app/courses/${courseId}`);
