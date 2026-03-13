@@ -53,9 +53,9 @@ function formatTime(seconds: number): string {
 }
 
 const DIFFICULTY_STYLE: Record<string, string> = {
-  easy: "bg-green-50 text-green-700",
-  medium: "bg-amber-50 text-amber-700",
-  hard: "bg-red-50 text-red-700",
+  easy: "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400",
+  medium: "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400",
+  hard: "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400",
 };
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -165,7 +165,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 flex flex-col items-center justify-center gap-4">
         <div className="w-8 h-8 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
-        <p className="text-sm text-gray-500">Grading your answers…</p>
+        <p className="text-sm text-gray-500 dark:text-zinc-400">Grading your answers…</p>
       </div>
     );
   }
@@ -178,59 +178,59 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
         <main className="max-w-[720px] mx-auto w-full px-4 sm:px-6 py-10 space-y-5">
           <button
             onClick={() => setReviewMode(false)}
-            className="text-sm text-gray-400 hover:text-gray-700 transition-colors"
+            className="text-sm text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition-colors"
           >
             ← Back to results
           </button>
-          <h2 className="text-xl font-bold text-gray-900">Question Review</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Question Review</h2>
           {questions.map((q, i) => {
             const g = grades[q.id] ?? null;
             const submittedAnswer = answers[q.id] ?? null;
             return (
-              <div key={q.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-                <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between gap-3">
+              <div key={q.id} className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 overflow-hidden">
+                <div className="px-5 py-3 border-b border-gray-100 dark:border-zinc-700 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-xs font-semibold text-gray-400">Q{i + 1}</span>
+                    <span className="text-xs font-semibold text-gray-400 dark:text-zinc-500">Q{i + 1}</span>
                     {q.topic && (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 truncate max-w-[180px]">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400 truncate max-w-[180px]">
                         {q.topic}
                       </span>
                     )}
                   </div>
-                  <span className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full capitalize ${DIFFICULTY_STYLE[q.difficulty] ?? "bg-gray-50 text-gray-500"}`}>
+                  <span className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full capitalize ${DIFFICULTY_STYLE[q.difficulty] ?? "bg-gray-50 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400"}`}>
                     {q.difficulty}
                   </span>
                 </div>
                 <div className="px-5 py-4 space-y-3">
-                  <p className="text-sm font-medium text-gray-900 leading-relaxed">{q.question_text}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed">{q.question_text}</p>
                   {submittedAnswer ? (
                     <div className="space-y-2">
                       <div className={`rounded-lg px-3 py-2 text-sm border ${
                         g?.is_correct
-                          ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                          ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/50"
                           : g
-                          ? "bg-red-50 text-red-800 border-red-200"
-                          : "bg-gray-50 text-gray-700 border-gray-100"
+                          ? "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400 border-red-200 dark:border-red-900/50"
+                          : "bg-gray-50 dark:bg-zinc-700/50 text-gray-700 dark:text-zinc-300 border-gray-100 dark:border-zinc-700"
                       }`}>
                         <span className="font-medium">Your answer: </span>
                         <span className="whitespace-pre-wrap">{submittedAnswer}</span>
                       </div>
                       {g && !g.gradingFailed && g.feedback && (
-                        <p className="text-xs text-gray-500 leading-relaxed">{g.feedback}</p>
+                        <p className="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed">{g.feedback}</p>
                       )}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-400 italic">Not answered</p>
+                    <p className="text-sm text-gray-400 dark:text-zinc-500 italic">Not answered</p>
                   )}
-                  <div className="rounded-xl bg-white border border-gray-200 px-4 py-3 space-y-1.5">
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Solution</p>
-                    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{q.solution_text}</p>
+                  <div className="rounded-xl bg-white dark:bg-zinc-800/80 border border-gray-200 dark:border-zinc-700 px-4 py-3 space-y-1.5">
+                    <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">Solution</p>
+                    <p className="text-sm text-gray-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">{q.solution_text}</p>
                   </div>
                 </div>
               </div>
             );
           })}
-          <Button variant="outline" className="w-full" onClick={() => setReviewMode(false)}>
+          <Button variant="outline" className="w-full dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800" onClick={() => setReviewMode(false)}>
             Back to Results
           </Button>
         </main>
@@ -267,34 +267,34 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
         <main className="flex-1 flex items-center justify-center px-6 py-16">
           <div className="max-w-md w-full space-y-8">
             <div className="text-center space-y-1">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+              <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">
                 Exam Complete
               </p>
               {scorePercent !== null ? (
                 <>
-                  <p className="text-5xl font-bold text-gray-900 tabular-nums">
+                  <p className="text-5xl font-bold text-gray-900 dark:text-white tabular-nums">
                     {correctCount}
-                    <span className="text-2xl text-gray-400 font-normal"> / {gradedQuestions.length}</span>
+                    <span className="text-2xl text-gray-400 dark:text-zinc-500 font-normal"> / {gradedQuestions.length}</span>
                   </p>
-                  <p className="text-lg text-gray-500">{scorePercent}%</p>
+                  <p className="text-lg text-gray-500 dark:text-zinc-400">{scorePercent}%</p>
                 </>
               ) : (
-                <p className="text-sm text-gray-400 mt-2">No answers submitted.</p>
+                <p className="text-sm text-gray-400 dark:text-zinc-500 mt-2">No answers submitted.</p>
               )}
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-400 dark:text-zinc-500">
                 {answeredCount} of {total} questions answered
               </p>
             </div>
 
             {topicBreakdown.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden divide-y divide-gray-100">
+              <div className="bg-white dark:bg-zinc-800 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden divide-y divide-gray-100 dark:divide-zinc-700">
                 {strongTopics.length > 0 && (
                   <div className="px-4 py-3 space-y-2">
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Strong</p>
+                    <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">Strong</p>
                     {strongTopics.map((t) => (
                       <div key={t.topic} className="flex items-center justify-between">
-                        <span className="text-sm text-emerald-600 truncate">✓ {t.topic}</span>
-                        <span className="text-xs text-gray-400 tabular-nums shrink-0 ml-3">
+                        <span className="text-sm text-emerald-600 dark:text-emerald-400 truncate">✓ {t.topic}</span>
+                        <span className="text-xs text-gray-400 dark:text-zinc-500 tabular-nums shrink-0 ml-3">
                           {Math.round(t.accuracy * 100)}%
                         </span>
                       </div>
@@ -303,11 +303,11 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
                 )}
                 {weakTopics.length > 0 && (
                   <div className="px-4 py-3 space-y-2">
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Needs improvement</p>
+                    <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">Needs improvement</p>
                     {weakTopics.map((t) => (
                       <div key={t.topic} className="flex items-center justify-between">
-                        <span className="text-sm text-amber-600 truncate">⚠ {t.topic}</span>
-                        <span className="text-xs text-gray-400 tabular-nums shrink-0 ml-3">
+                        <span className="text-sm text-amber-600 dark:text-amber-400 truncate">⚠ {t.topic}</span>
+                        <span className="text-xs text-gray-400 dark:text-zinc-500 tabular-nums shrink-0 ml-3">
                           {Math.round(t.accuracy * 100)}%
                         </span>
                       </div>
@@ -318,7 +318,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
             )}
 
             <div className="flex flex-col gap-3">
-              <Button variant="outline" className="w-full" onClick={() => setReviewMode(true)}>
+              <Button variant="outline" className="w-full dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800" onClick={() => setReviewMode(true)}>
                 Review Answers
               </Button>
               <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
@@ -346,7 +346,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
       />
 
       {/* Question dot navigation */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-white dark:bg-zinc-950 border-b border-gray-100 dark:border-zinc-800">
         <div className="max-w-[720px] mx-auto px-4 sm:px-6 py-3 flex gap-1.5 flex-wrap">
           {questions.map((question, i) => {
             const isAnswered = !!(answers[question.id] ?? "").trim();
@@ -360,8 +360,8 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
                   isCurrent
                     ? "bg-blue-500 text-white"
                     : isAnswered
-                    ? "bg-gray-700 text-white"
-                    : "bg-gray-100 text-gray-400 hover:bg-gray-200"
+                    ? "bg-gray-700 dark:bg-zinc-500 text-white"
+                    : "bg-gray-100 dark:bg-zinc-700 text-gray-400 dark:text-zinc-400 hover:bg-gray-200 dark:hover:bg-zinc-600"
                 }`}
               >
                 {i + 1}
@@ -373,25 +373,25 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
 
       <main className="flex-1 flex flex-col items-center px-4 sm:px-6 py-8">
         {/* Question card */}
-        <div className="w-full max-w-[720px] bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="w-full max-w-[720px] bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 shadow-sm dark:shadow-none overflow-hidden">
           {/* Card header */}
-          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between gap-3">
+          <div className="px-6 py-4 border-b border-gray-100 dark:border-zinc-700 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="text-sm font-bold text-gray-900 shrink-0">Q{currentIndex + 1}</span>
+              <span className="text-sm font-bold text-gray-900 dark:text-zinc-400 shrink-0">Q{currentIndex + 1}</span>
               {q.topic && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 truncate max-w-[220px]">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400 truncate max-w-[220px]">
                   {q.topic}
                 </span>
               )}
             </div>
-            <span className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full capitalize ${DIFFICULTY_STYLE[q.difficulty] ?? "bg-gray-50 text-gray-500"}`}>
+            <span className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full capitalize ${DIFFICULTY_STYLE[q.difficulty] ?? "bg-gray-50 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400"}`}>
               {q.difficulty}
             </span>
           </div>
 
           {/* Question + answer */}
           <div className="px-6 py-6 space-y-5">
-            <p className="text-base font-medium text-gray-900 leading-relaxed">
+            <p className="text-base font-medium text-gray-900 dark:text-zinc-200 leading-relaxed">
               {q.question_text}
             </p>
             <ExamAnswerInput
@@ -407,7 +407,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
           <button
             onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
             disabled={currentIndex === 0}
-            className="text-sm text-gray-400 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-1 py-1"
+            className="text-sm text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-1 py-1"
           >
             ← Previous
           </button>
@@ -449,33 +449,33 @@ function ExamNav({
 }) {
   const isLow = timeLeft < 60;
   return (
-    <nav className="bg-white border-b border-gray-100 shrink-0">
+    <nav className="bg-white dark:bg-zinc-950 border-b border-gray-100 dark:border-zinc-800 shrink-0">
       <div className="max-w-[720px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 min-w-0 text-sm">
           <Link
             href={`/app/courses/${questionSet.courseId}`}
-            className="text-gray-400 hover:text-gray-700 transition-colors shrink-0 truncate max-w-[120px]"
+            className="text-gray-400 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-300 transition-colors shrink-0 truncate max-w-[120px]"
           >
             {questionSet.courseTitle}
           </Link>
-          <span className="text-gray-200 shrink-0">/</span>
-          <span className="text-gray-700 font-medium truncate max-w-[160px]">
+          <span className="text-gray-200 dark:text-zinc-700 shrink-0">/</span>
+          <span className="text-gray-700 dark:text-zinc-300 font-medium truncate max-w-[160px]">
             {questionSet.title}
           </span>
-          <span className="shrink-0 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 uppercase tracking-wide">
+          <span className="shrink-0 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 uppercase tracking-wide">
             Exam
           </span>
         </div>
         <div className="flex items-center gap-3 shrink-0">
           {phase === "active" && (
             <>
-              <span className={`font-mono text-sm font-semibold tabular-nums ${isLow ? "text-red-500" : "text-gray-600"}`}>
+              <span className={`font-mono text-sm font-semibold tabular-nums ${isLow ? "text-red-500" : "text-gray-600 dark:text-zinc-300"}`}>
                 {formatTime(timeLeft)}
               </span>
               {onSubmit && (
                 <button
                   onClick={onSubmit}
-                  className="text-xs font-medium text-gray-400 hover:text-gray-700 transition-colors"
+                  className="text-xs font-medium text-gray-400 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 transition-colors"
                 >
                   Submit
                 </button>
@@ -483,7 +483,7 @@ function ExamNav({
             </>
           )}
           {phase === "complete" && (
-            <span className="text-xs font-semibold text-gray-400">Complete</span>
+            <span className="text-xs font-semibold text-gray-400 dark:text-zinc-500">Complete</span>
           )}
         </div>
       </div>
@@ -506,8 +506,8 @@ function ExamAnswerInput({
   if (question.question_type === "tf") {
     const choices = question.choices?.length === 2 ? question.choices : ["True", "False"];
     const selectedStyles = [
-      "border-emerald-500 bg-emerald-50 text-emerald-700",
-      "border-red-400 bg-red-50 text-red-700",
+      "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400",
+      "border-red-400 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400",
     ];
     return (
       <div className="grid grid-cols-2 gap-3">
@@ -519,7 +519,7 @@ function ExamAnswerInput({
             className={`py-4 rounded-xl text-sm font-semibold border-2 transition-all ${
               answer === opt
                 ? selectedStyles[i]
-                : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                : "border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-gray-600 dark:text-zinc-300 hover:border-gray-300 dark:hover:border-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-600"
             }`}
           >
             {opt}
@@ -543,16 +543,16 @@ function ExamAnswerInput({
               onClick={() => onChange(opt)}
               className={`w-full text-left flex items-start gap-3 px-4 py-3 rounded-xl border-2 transition-all ${
                 selected
-                  ? "border-emerald-500 bg-emerald-50"
-                  : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
+                  ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20"
+                  : "border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-600"
               }`}
             >
               <span className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mt-0.5 ${
-                selected ? "bg-emerald-500 text-white" : "bg-gray-100 text-gray-500"
+                selected ? "bg-emerald-500 text-white" : "bg-gray-100 dark:bg-zinc-600 text-gray-500 dark:text-zinc-400"
               }`}>
                 {letter}
               </span>
-              <span className={`text-sm leading-relaxed ${selected ? "text-emerald-800 font-medium" : "text-gray-700"}`}>
+              <span className={`text-sm leading-relaxed ${selected ? "text-emerald-800 dark:text-emerald-300 font-medium" : "text-gray-700 dark:text-zinc-300"}`}>
                 {opt}
               </span>
             </button>
@@ -597,9 +597,9 @@ function ExamTextarea({ value, onChange }: { value: string; onChange: (v: string
       placeholder="Write your answer here..."
       rows={4}
       style={{ overflow: "hidden" }}
-      className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900
-        leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/20
-        focus:border-blue-400 transition-colors placeholder:text-gray-400"
+      className="w-full rounded-xl border border-gray-200 dark:border-zinc-600 px-4 py-3 text-sm text-gray-900 dark:text-zinc-200
+        bg-white dark:bg-zinc-700 leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/20
+        focus:border-blue-400 transition-colors placeholder:text-gray-400 dark:placeholder:text-zinc-500"
     />
   );
 }

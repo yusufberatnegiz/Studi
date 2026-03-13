@@ -36,8 +36,8 @@ export function AnswerInput({
   if (question.question_type === "tf") {
     const choices = question.choices?.length === 2 ? question.choices : ["True", "False"];
     const selectedStyles = [
-      "border-emerald-500 bg-emerald-50 text-emerald-700",
-      "border-red-400 bg-red-50 text-red-700",
+      "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400",
+      "border-red-400 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400",
     ];
     return (
       <div className="grid grid-cols-2 gap-3">

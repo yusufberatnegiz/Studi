@@ -51,33 +51,33 @@ export default function CompletionScreen({
       <main className="flex-1 flex items-center justify-center px-6 py-16">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center space-y-1">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+            <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">
               Practice Complete
             </p>
             {scorePercent !== null ? (
               <>
-                <p className="text-5xl font-bold text-gray-900 tabular-nums">
+                <p className="text-5xl font-bold text-gray-900 dark:text-white tabular-nums">
                   {correctCount}
-                  <span className="text-2xl text-gray-400 font-normal"> / {total}</span>
+                  <span className="text-2xl text-gray-400 dark:text-zinc-500 font-normal"> / {total}</span>
                 </p>
-                <p className="text-lg text-gray-500">{scorePercent}%</p>
+                <p className="text-lg text-gray-500 dark:text-zinc-400">{scorePercent}%</p>
               </>
             ) : (
-              <p className="text-sm text-gray-400 mt-2">No graded answers yet.</p>
+              <p className="text-sm text-gray-400 dark:text-zinc-500 mt-2">No graded answers yet.</p>
             )}
           </div>
 
           {topicBreakdown.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden divide-y divide-gray-100">
+            <div className="bg-white dark:bg-zinc-800 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden divide-y divide-gray-100 dark:divide-zinc-700">
               {strongTopics.length > 0 && (
                 <div className="px-4 py-3 space-y-2">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                  <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">
                     Strong
                   </p>
                   {strongTopics.map((t) => (
                     <div key={t.topic} className="flex items-center justify-between">
-                      <span className="text-sm text-emerald-600">✓ {t.topic}</span>
-                      <span className="text-xs text-gray-400 tabular-nums">
+                      <span className="text-sm text-emerald-600 dark:text-emerald-400">✓ {t.topic}</span>
+                      <span className="text-xs text-gray-400 dark:text-zinc-500 tabular-nums">
                         {Math.round(t.accuracy * 100)}%
                       </span>
                     </div>
@@ -86,13 +86,13 @@ export default function CompletionScreen({
               )}
               {weakTopics.length > 0 && (
                 <div className="px-4 py-3 space-y-2">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                  <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">
                     Needs improvement
                   </p>
                   {weakTopics.map((t) => (
                     <div key={t.topic} className="flex items-center justify-between">
-                      <span className="text-sm text-amber-600">⚠ {t.topic}</span>
-                      <span className="text-xs text-gray-400 tabular-nums">
+                      <span className="text-sm text-amber-600 dark:text-amber-400">⚠ {t.topic}</span>
+                      <span className="text-xs text-gray-400 dark:text-zinc-500 tabular-nums">
                         {Math.round(t.accuracy * 100)}%
                       </span>
                     </div>
@@ -103,12 +103,12 @@ export default function CompletionScreen({
           )}
 
           <div className="flex flex-col gap-3">
-            <Button variant="outline" className="w-full" onClick={onReviewMode}>
+            <Button variant="outline" className="w-full dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800" onClick={onReviewMode}>
               Review Questions
             </Button>
             <Button
               variant="outline"
-              className="w-full"
+              className="w-full dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
               onClick={onGenerateWeakTopics}
               disabled={isPending}
             >
@@ -117,7 +117,7 @@ export default function CompletionScreen({
             {weakTopicError && (
               <p className="text-xs text-red-500">{weakTopicError}</p>
             )}
-            <Button variant="outline" className="w-full" onClick={onRestart}>
+            <Button variant="outline" className="w-full dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800" onClick={onRestart}>
               Restart Practice
             </Button>
             <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
