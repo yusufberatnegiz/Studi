@@ -6,14 +6,16 @@ import { generateWeakTopicQuestions } from "./generate-actions";
 import DeleteCourseButton from "./delete-course-button";
 import UpgradeModal from "./upgrade-modal";
 import { deleteCourse } from "../../actions";
-import { upgradeCourse } from "./actions";
 
 export default async function CourseDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ courseId: string }>;
+  searchParams: Promise<{ checkout?: string }>;
 }) {
   const { courseId } = await params;
+  const { checkout } = await searchParams;
 
   const supabase = await createClient();
   const {
@@ -163,6 +165,19 @@ export default async function CourseDetailPage({
   return (
     <main className="max-w-3xl mx-auto px-6 py-10 space-y-8">
 
+      {/* Checkout success banner */}
+      {checkout === "success" && (
+        <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 flex items-start gap-3">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">
+            <polyline points="2 9 7 14 16 4" />
+          </svg>
+          <div>
+            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Payment received</p>
+            <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5">This course will be upgraded shortly. Refresh the page in a few seconds.</p>
+          </div>
+        </div>
+      )}
+
       {/* Breadcrumb + title */}
       <div>
         <div className="flex items-center gap-2 text-sm mb-3">
@@ -175,7 +190,12 @@ export default async function CourseDetailPage({
         <div className="flex items-center justify-between gap-4 mt-1">
           <div className="flex items-center gap-2 min-w-0">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white truncate">{course.title}</h1>
-            <UpgradeModal courseId={courseId} isPremium={isPremium} action={upgradeCourse} />
+            <UpgradeModal
+              courseId={courseId}
+              isPremium={isPremium}
+              userId={user.id}
+              priceId={process.env.PADDLE_PRICE_ID_COURSE ?? ""}
+            />
           </div>
           <DeleteCourseButton courseId={courseId} action={deleteCourse} />
         </div>

@@ -2,9 +2,13 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ThemeToggle } from "./theme-toggle";
 import PlanUpgradeButton from "./plan-upgrade-button";
-import { upgradePlan } from "./actions";
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ checkout?: string }>;
+}) {
+  const { checkout } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -22,6 +26,19 @@ export default async function SettingsPage() {
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-10 space-y-8">
+      {/* Checkout success banner */}
+      {checkout === "success" && (
+        <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-5 py-4 flex items-start gap-3">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">
+            <polyline points="2 9 7 14 16 4" />
+          </svg>
+          <div>
+            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Payment received</p>
+            <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5">Your account will be upgraded to Premium shortly. Refresh this page in a few seconds.</p>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
@@ -121,7 +138,10 @@ export default async function SettingsPage() {
                 <span className="text-2xl font-bold text-gray-900 dark:text-white">$8</span>
                 <span className="text-sm text-gray-400 dark:text-zinc-400">/ month</span>
               </div>
-              <PlanUpgradeButton action={upgradePlan} />
+              <PlanUpgradeButton
+                userId={user.id}
+                priceId={process.env.PADDLE_PRICE_ID_PREMIUM ?? ""}
+              />
             </div>
           </div>
         </section>

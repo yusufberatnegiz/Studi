@@ -1,31 +1,37 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import type { UpgradeCourseState } from "./actions";
+import { useState } from "react";
+import { getPaddleInstance } from "@paddle/paddle-js";
 
 type Props = {
   courseId: string;
   isPremium: boolean;
-  action: (courseId: string) => Promise<UpgradeCourseState>;
+  userId: string;
+  priceId: string;
 };
 
-export default function UpgradeModal({ courseId, isPremium, action }: Props) {
+export default function UpgradeModal({ courseId, isPremium, userId, priceId }: Props) {
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+  const [launched, setLaunched] = useState(false);
 
   function handleUpgrade() {
-    setError(null);
-    startTransition(async () => {
-      const result = await action(courseId);
-      if (result && "error" in result) {
-        setError(result.error);
-      } else {
-        setOpen(false);
-        router.refresh();
-      }
+    const paddle = getPaddleInstance();
+    if (!paddle) return;
+
+    setLaunched(true);
+    setOpen(false);
+
+    paddle.Checkout.open({
+      items: [{ priceId, quantity: 1 }],
+      customData: {
+        userId,
+        purchaseType: "course",
+        courseId,
+      },
+      settings: {
+        displayMode: "overlay",
+        successUrl: `${window.location.origin}/app/courses/${courseId}?checkout=success`,
+      },
     });
   }
 
@@ -100,8 +106,6 @@ export default function UpgradeModal({ courseId, isPremium, action }: Props) {
               <span className="text-sm text-gray-400 dark:text-zinc-400">one-time · this course only</span>
             </div>
 
-            {error && <p className="text-xs text-red-500">{error}</p>}
-
             {/* Full-premium nudge */}
             <p className="text-xs text-gray-400 dark:text-zinc-500">
               Want unlimited access to all courses?{" "}
@@ -117,17 +121,16 @@ export default function UpgradeModal({ courseId, isPremium, action }: Props) {
             <div className="flex gap-2">
               <button
                 onClick={() => setOpen(false)}
-                disabled={isPending}
-                className="flex-1 px-4 py-2 text-sm font-medium rounded-xl border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors disabled:opacity-40"
+                className="flex-1 px-4 py-2 text-sm font-medium rounded-xl border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpgrade}
-                disabled={isPending}
+                disabled={launched}
                 className="flex-1 px-4 py-2 text-sm font-semibold rounded-xl bg-amber-500 hover:bg-amber-600 text-white transition-colors disabled:opacity-40"
               >
-                {isPending ? "Upgrading…" : "Upgrade Course"}
+                {launched ? "Opening checkout…" : "Upgrade Course - $4"}
               </button>
             </div>
 
