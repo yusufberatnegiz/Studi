@@ -26,6 +26,10 @@ export default async function SettingsPage({
     .single();
 
   const isPremium = profile?.plan != null && profile.plan !== "free";
+  const paddlePortalUrl =
+    process.env.PADDLE_ENV === "production"
+      ? "https://customer.paddle.com/"
+      : "https://sandbox-customer.paddle.com/";
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-10 space-y-8">
@@ -116,7 +120,9 @@ export default async function SettingsPage({
               </p>
             </div>
             <a
-              href="/api/paddle/portal"
+              href={paddlePortalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-sm font-medium px-3 py-1.5 rounded-lg border border-gray-200 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors shrink-0"
             >
               Billing portal
