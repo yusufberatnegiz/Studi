@@ -25,7 +25,16 @@ export default function ChangeEmailForm({ currentEmail }: { currentEmail: string
     setLoading(false);
 
     if (error) {
-      setError("Could not update email. Please try again.");
+      const msg = error.message.toLowerCase();
+      if (msg.includes("already") || msg.includes("taken") || msg.includes("in use") || msg.includes("registered")) {
+        setError("This email is already in use by another account.");
+      } else if (msg.includes("invalid") || msg.includes("valid email")) {
+        setError("Please enter a valid email address.");
+      } else if (msg.includes("rate") || msg.includes("too many")) {
+        setError("Too many attempts. Please wait a moment and try again.");
+      } else {
+        setError("Could not update email. Please try again.");
+      }
       return;
     }
 
