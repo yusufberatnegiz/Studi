@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { sendPasswordReset } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -24,14 +24,11 @@ export default function ResetPasswordPage() {
     setLoading(true);
     setError(null);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "https://www.exai.study/update-password",
-    });
+    const result = await sendPasswordReset(email);
 
     setLoading(false);
-    if (error) {
-      setError("Could not send reset email. Please try again.");
+    if ("error" in result) {
+      setError(result.error);
       return;
     }
     setSent(true);
