@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -20,14 +20,46 @@ export default function UpdatePasswordPage() {
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    // Check if we already have a recovery session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setReady(true);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setReady(true);
+      } else if (event === "SIGNED_OUT") {
+        router.replace("/auth");
+      }
+    });
+
+    // If no session and no recovery event after a short wait, redirect
+    const timeout = setTimeout(async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.replace("/auth");
+      }
+    }, 1500);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
+  }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
       return;
     }
     if (password !== confirm) {
@@ -41,16 +73,19 @@ export default function UpdatePasswordPage() {
     setLoading(false);
 
     if (error) {
-      if (error.message.toLowerCase().includes("same password")) {
-        setError("New password must be different from your current password.");
-      } else {
-        setError("Could not update password. The reset link may have expired.");
-      }
+      setError("Unable to reset password. Please request a new reset link.");
       return;
     }
 
-    setSuccess(true);
-    setTimeout(() => router.push("/app"), 2000);
+    router.push("/auth?notice=password-updated");
+  }
+
+  if (!ready) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex items-center justify-center">
+        <p className="text-sm text-muted-foreground">Verifying reset link…</p>
+      </div>
+    );
   }
 
   return (
@@ -69,38 +104,30 @@ export default function UpdatePasswordPage() {
         </CardHeader>
 
         <CardContent>
-          {success ? (
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Password updated successfully. Redirecting you to the app…
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <Input
-                type="password"
-                placeholder="New password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={loading}
-              />
-              <Input
-                type="password"
-                placeholder="Confirm new password"
-                value={confirm}
-                onChange={(e) => setConfirm(e.target.value)}
-                required
-                disabled={loading}
-              />
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <Input
+              type="password"
+              placeholder="New password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+            />
+            <Input
+              type="password"
+              placeholder="Confirm new password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              required
+              disabled={loading}
+            />
 
-              {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && <p className="text-sm text-destructive">{error}</p>}
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Updating…" : "Update password"}
-              </Button>
-            </form>
-          )}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Updating…" : "Update password"}
+            </Button>
+          </form>
         </CardContent>
       </Card>
     </div>

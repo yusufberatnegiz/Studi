@@ -34,6 +34,9 @@ function AuthForm() {
   useEffect(() => {
     const m = searchParams.get("mode");
     if (m === "signup" || m === "signin") setMode(m);
+    if (searchParams.get("notice") === "password-updated") {
+      setNotice("Your password has been updated.");
+    }
   }, [searchParams]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
