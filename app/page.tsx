@@ -428,6 +428,7 @@ export default function LandingPage() {
             <span>© {new Date().getFullYear()} Exai</span>
             <Link href="/privacy" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">Terms</Link>
+            <a href="mailto:support@exai.study" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">support@exai.study</a>
           </div>
         </div>
       </footer>

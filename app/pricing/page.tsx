@@ -136,6 +136,22 @@ export default function PricingPage() {
 
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-100 dark:border-zinc-800">
+        <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-400 dark:text-zinc-500">
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="Exai" className="h-5 w-5 object-contain opacity-60" />
+            <span>Exai - AI-powered exam preparation</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span>© {new Date().getFullYear()} Exai</span>
+            <Link href="/privacy" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">Terms</Link>
+            <a href="mailto:support@exai.study" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">support@exai.study</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
