@@ -165,6 +165,9 @@ export default function LandingPage() {
           </span>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
+              <Link href="/pricing">Pricing</Link>
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
               <Link href="/auth">Sign in</Link>
             </Button>
             <Button
