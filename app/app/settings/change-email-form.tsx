@@ -14,6 +14,11 @@ export default function ChangeEmailForm({ currentEmail }: { currentEmail: string
     e.preventDefault();
     setError(null);
 
+    if (!email.includes("@") || !email.includes(".")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     if (email.toLowerCase() === currentEmail.toLowerCase()) {
       setError("That is already your current email.");
       return;
@@ -62,13 +67,12 @@ export default function ChangeEmailForm({ currentEmail }: { currentEmail: string
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2 w-full max-w-xs">
+    <form onSubmit={handleSubmit} noValidate className="space-y-2 w-full max-w-xs">
       <input
         type="email"
         placeholder="New email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        required
         disabled={loading}
         className="w-full text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-gray-800 dark:text-zinc-200 placeholder:text-gray-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
