@@ -38,8 +38,10 @@ function AuthForm() {
       setNotice("Your password has been updated.");
     }
   }, [searchParams]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -52,17 +54,25 @@ function AuthForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setError(null);
     setNotice(null);
 
+    if (mode === "signup") {
+      if (password.length < 8) {
+        setError("Password must be at least 8 characters.");
+        return;
+      }
+      if (!agreedToTerms) {
+        setError("You must agree to the Terms of Service and Privacy Policy to create an account.");
+        return;
+      }
+    }
+
+    setLoading(true);
     const supabase = createClient();
 
     if (mode === "signin") {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         const msg = error.message.toLowerCase();
         if (msg.includes("invalid login") || msg.includes("invalid credentials") || msg.includes("wrong password") || msg.includes("no user")) {
@@ -84,14 +94,13 @@ function AuthForm() {
         if (msg.includes("already registered") || msg.includes("already exists") || msg.includes("user already")) {
           setError("An account with this email already exists. Try signing in.");
         } else if (msg.includes("password") && msg.includes("weak")) {
-          setError("Password is too weak. Use at least 6 characters.");
+          setError("Password is too weak. Use at least 8 characters.");
         } else {
           setError("Could not create account. Please try again.");
         }
         setLoading(false);
         return;
       }
-      // Supabase requires email confirmation by default
       if (!data.session) {
         setNotice("Check your email to confirm your account, then sign in.");
         setLoading(false);
@@ -134,7 +143,7 @@ function AuthForm() {
             <div className="space-y-1">
               <Input
                 type="password"
-                placeholder="Password"
+                placeholder="Password (min. 8 characters)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -152,12 +161,34 @@ function AuthForm() {
               )}
             </div>
 
+            {mode === "signup" && (
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  className="mt-0.5 shrink-0 accent-blue-600"
+                  disabled={loading}
+                />
+                <span className="text-xs text-muted-foreground leading-relaxed">
+                  I agree to the{" "}
+                  <Link href="/terms" target="_blank" className="underline underline-offset-2 text-foreground hover:text-foreground/80">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy" target="_blank" className="underline underline-offset-2 text-foreground hover:text-foreground/80">
+                    Privacy Policy
+                  </Link>
+                </span>
+              </label>
+            )}
+
             {error && <p className="text-sm text-destructive">{error}</p>}
             {notice && <p className="text-sm text-muted-foreground">{notice}</p>}
 
             <Button type="submit" className="w-full" disabled={loading}>
               {loading
-                ? "Please wait…"
+                ? "Please wait..."
                 : mode === "signin"
                 ? "Sign in"
                 : "Create account"}
@@ -171,9 +202,7 @@ function AuthForm() {
             <button
               type="button"
               className="underline underline-offset-2 text-foreground"
-              onClick={() =>
-                switchMode(mode === "signin" ? "signup" : "signin")
-              }
+              onClick={() => switchMode(mode === "signin" ? "signup" : "signin")}
             >
               {mode === "signin" ? "Sign up" : "Sign in"}
             </button>

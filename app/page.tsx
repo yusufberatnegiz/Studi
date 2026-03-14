@@ -426,9 +426,9 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-4">
             <span>© {new Date().getFullYear()} Exai</span>
+            <Link href="/contact" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">Contact</Link>
             <Link href="/privacy" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">Terms</Link>
-            <a href="mailto:support@exai.study" className="hover:text-gray-700 dark:hover:text-zinc-300 transition-colors">support@exai.study</a>
           </div>
         </div>
       </footer>
