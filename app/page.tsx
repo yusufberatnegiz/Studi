@@ -172,7 +172,7 @@ export default function LandingPage() {
             </Button>
             <Button
               size="sm"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
               asChild
             >
               <Link href="/auth?mode=signup">Get Started</Link>
@@ -195,7 +195,7 @@ export default function LandingPage() {
         <div className="mt-8 flex items-center justify-center gap-3 flex-wrap">
           <Button
             size="lg"
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-8"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8"
             asChild
           >
             <Link href="/auth?mode=signup">Get Started</Link>
@@ -388,7 +388,7 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" asChild>
                 <Link href="/app/settings">Upgrade to Premium</Link>
               </Button>
           </div>
@@ -408,7 +408,7 @@ export default function LandingPage() {
           <div className="mt-8">
             <Button
               size="lg"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-10"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-10"
               asChild
             >
               <Link href="/auth?mode=signup">Create Your First Course</Link>
