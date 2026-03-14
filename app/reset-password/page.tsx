@@ -26,7 +26,7 @@ export default function ResetPasswordPage() {
 
     const supabase = createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "https://exai.study/update-password",
+      redirectTo: "https://www.exai.study/update-password",
     });
 
     setLoading(false);
