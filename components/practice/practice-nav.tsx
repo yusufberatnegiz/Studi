@@ -31,7 +31,7 @@ export default function PracticeNav({
           {Math.min(index + 1, total)} / {total}
         </span>
       </div>
-      {/* Progress bar — full width, flush under nav border */}
+      {/* Progress bar - full width, flush under nav border */}
       <div className="h-0.5 w-full bg-gray-100 dark:bg-zinc-800">
         <div
           className="h-full bg-blue-500 transition-all duration-300"

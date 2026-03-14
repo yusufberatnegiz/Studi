@@ -74,7 +74,7 @@ export default async function SettingsPage({
           <div className="px-5 py-4 flex items-center justify-between">
             <p className="text-sm text-gray-500 dark:text-zinc-400">Email</p>
             <p className="text-sm font-medium text-gray-800 dark:text-zinc-400">
-              {user.email ?? "—"}
+              {user.email ?? "-"}
             </p>
           </div>
           <div className="px-5 py-4 flex items-center justify-between">

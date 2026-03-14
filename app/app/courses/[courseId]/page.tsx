@@ -201,7 +201,7 @@ export default async function CourseDetailPage({
         </div>
       </div>
 
-      {/* Progress summary — 4 stat chips */}
+      {/* Progress summary - 4 stat chips */}
       {totalAnswered > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <StatChip label="Answered" value={totalAnswered.toString()} sub="questions" />
@@ -257,7 +257,7 @@ export default async function CourseDetailPage({
         ))}
       </div>
 
-      {/* Getting started — empty state hints */}
+      {/* Getting started - empty state hints */}
       {(docCount === 0 || setCount === 0) && (
         <div className="grid sm:grid-cols-2 gap-3">
           {docCount === 0 && (

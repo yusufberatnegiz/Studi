@@ -21,7 +21,7 @@ const COURSE_FEATURES = [
   "30 questions per generation for that course",
   "No file size limit for that course",
   "Unlimited materials for that course",
-  "One-time payment — no subscription",
+  "One-time payment - no subscription",
 ];
 
 const PREMIUM_FEATURES = [

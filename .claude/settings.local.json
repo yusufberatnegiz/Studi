@@ -11,7 +11,11 @@
       "Bash(npm install -g pnpm)",
       "Bash(pnpm lint)",
       "Bash(pnpm build)",
-      "Bash(pnpm add pdf-parse@1.1.1)"
+      "Bash(pnpm add pdf-parse@1.1.1)",
+      "Bash(find 'c:/Users/Yusuf Berat Negiz/Studi' -name *.sql -not -path */node_modules/*)",
+      "Bash(find 'c:/Users/Yusuf Berat Negiz/Studi' -name source-upload* -not -path */node_modules/*)",
+      "Bash(grep -rn \"user_id\\\\|\\\\.eq\\(id\" 'c:\\\\Users\\\\Yusuf Berat Negiz\\\\Studi\\\\app' --include=*.ts --include=*.tsx)",
+      "Bash(grep -n \"daily\\\\|per_day\\\\|generation.*day\\\\|day.*generation\\\\|ocr.*day\\\\|day.*ocr\\\\|DAILY\\\\|rate\\\\|15\\\\|material.*limit\\\\|doc.*limit\\\\|FREE_PLAN_MAX_DOC\" app/app/courses/[courseId]/actions.ts app/app/courses/[courseId]/generate-actions.ts lib/source-upload.ts app/app/actions.ts)"
     ]
   }
 }

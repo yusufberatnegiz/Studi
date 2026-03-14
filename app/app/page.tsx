@@ -12,7 +12,7 @@ export default async function AppPage() {
 
   if (!user) redirect("/auth");
 
-  // Upsert profile on first login — idempotent
+  // Upsert profile on first login - idempotent
   const { data: profile } = await supabase
     .from("profiles")
     .upsert(
@@ -100,7 +100,7 @@ export default async function AppPage() {
             <StatCard label="Questions Answered" value={String(answered)} />
             <StatCard
               label="Overall Accuracy"
-              value={accuracyPct !== null ? `${accuracyPct}%` : "—"}
+              value={accuracyPct !== null ? `${accuracyPct}%` : "-"}
               highlight={
                 accuracyPct !== null
                   ? accuracyPct >= 80
