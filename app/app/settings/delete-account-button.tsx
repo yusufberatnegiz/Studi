@@ -30,7 +30,7 @@ export default function DeleteAccountButton() {
       <button
         type="button"
         onClick={() => setConfirming(true)}
-        className="text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
+        className="text-xs text-gray-400 dark:text-zinc-500 hover:text-red-500 dark:hover:text-red-400 transition-colors underline underline-offset-2"
       >
         Delete account
       </button>

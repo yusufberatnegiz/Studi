@@ -148,23 +148,10 @@ export default async function SettingsPage({
         </section>
       )}
 
-      {/* Danger Zone */}
-      <section className="bg-white dark:bg-zinc-800 rounded-xl border border-red-100 dark:border-red-900/50 overflow-hidden">
-        <div className="px-5 py-4 border-b border-red-100 dark:border-red-900/50">
-          <h2 className="text-sm font-semibold text-red-600 dark:text-red-400">Danger Zone</h2>
-        </div>
-        <div className="px-5 py-5">
-          <div className="flex items-start justify-between gap-6">
-            <div>
-              <p className="text-sm font-medium text-gray-700 dark:text-zinc-300">Delete account</p>
-              <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5">
-                Permanently delete your account and all your data.
-              </p>
-            </div>
-            <DeleteAccountButton />
-          </div>
-        </div>
-      </section>
+      {/* Delete account */}
+      <div className="pt-2">
+        <DeleteAccountButton />
+      </div>
     </main>
   );
 }
