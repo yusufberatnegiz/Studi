@@ -92,9 +92,12 @@ export default function PricingPage() {
           </div>
 
           {/* Course Upgrade */}
-          <div className="rounded-2xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-7 flex flex-col">
+          <div className="rounded-2xl border-2 border-blue-500 bg-white dark:bg-zinc-900 p-7 flex flex-col relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+              <span className="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Pay per course</span>
+            </div>
             <div className="mb-6">
-              <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-widest mb-2">Course Upgrade</p>
+              <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-2">Course Upgrade</p>
               <div className="flex items-end gap-1">
                 <span className="text-4xl font-bold text-gray-900 dark:text-white">$4</span>
                 <span className="text-sm text-gray-400 dark:text-zinc-500 mb-1.5">/ course</span>
@@ -104,12 +107,12 @@ export default function PricingPage() {
             <ul className="space-y-3 flex-1 mb-8">
               {COURSE_FEATURES.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm text-gray-600 dark:text-zinc-300">
-                  <IconCheck className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <IconCheck className="h-4 w-4 text-blue-500 shrink-0 mt-0.5" />
                   {f}
                 </li>
               ))}
             </ul>
-            <Button variant="outline" className="w-full dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800" asChild>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" asChild>
               <Link href="/auth?mode=signup">Upgrade a course</Link>
             </Button>
           </div>
