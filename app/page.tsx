@@ -84,7 +84,7 @@ const features = [
   {
     title: "Exam-style question generation",
     description:
-      "Questions that mirror your actual exam format - multiple choice, short answer, and open-ended.",
+      "Questions that mirror your actual exam format - multiple choice, short answer, true/false and open-ended.",
     Icon: IconSparkle,
   },
   {
@@ -187,10 +187,10 @@ export default function LandingPage() {
           For quizzes, midterms, and finals
         </p>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight max-w-3xl mx-auto">
-          Prepare for exams with AI that is actually built for exam practice.
+          Turn your course materials into realistic exam practice with AI.
         </h1>
         <p className="mt-6 text-lg text-gray-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          Upload your course materials, generate exam-style questions, practice one at a time, and focus on your weak topics.
+          Upload notes, slides, or past exams. Exai generates exam-style questions so you can practice one question at a time and focus on your weakest topics.
         </p>
         <div className="mt-8 flex items-center justify-center gap-3 flex-wrap">
           <Button
