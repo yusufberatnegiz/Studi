@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { checkEmailExists } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -106,6 +107,12 @@ function AuthForm() {
       router.push("/app");
       router.refresh();
     } else {
+      const exists = await checkEmailExists(email);
+      if (exists) {
+        setError("An account with this email already exists. Try signing in.");
+        setLoading(false);
+        return;
+      }
       const { data, error } = await supabase.auth.signUp({ email, password });
       if (error) {
         const msg = error.message.toLowerCase();
@@ -122,7 +129,7 @@ function AuthForm() {
         } else if (msg.includes("password") && msg.includes("weak")) {
           setError("Password is too weak. Use at least 8 characters.");
         } else {
-          setError(`Could not create account: ${error.message}`);
+          setError("Could not create account. Please try again.");
         }
         setLoading(false);
         return;
