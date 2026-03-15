@@ -113,7 +113,11 @@ function AuthForm() {
         setLoading(false);
         return;
       }
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: "https://www.exai.study/auth/confirmed" },
+      });
       if (error) {
         const msg = error.message.toLowerCase();
         if (
