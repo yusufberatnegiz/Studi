@@ -27,7 +27,7 @@ export async function saveExamFile(
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "Not authenticated." };
+  if (!user) return { error: "You must be signed in to upload files." };
 
   const { data: course } = await supabase
     .from("courses")
@@ -35,7 +35,7 @@ export async function saveExamFile(
     .eq("id", courseId)
     .eq("user_id", user.id)
     .single();
-  if (!course) return { error: "Course not found." };
+  if (!course) return { error: "You do not have permission to upload to this course." };
 
   for (const file of validFiles) {
     const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
@@ -43,7 +43,10 @@ export async function saveExamFile(
     if (file.size > 10 * 1024 * 1024) return { error: `${file.name} exceeds 10 MB.` };
 
     const safeName = file.name.replace(/\s+/g, "_");
-    const storagePath = `exam-files/${user.id}/${courseId}/${randomUUID()}-${safeName}`;
+    // Path: userId/exam-files/courseId/uuid-filename
+    // userId is the first component — consistent with the existing bucket policy
+    // that enforces (storage.foldername(name))[1] = auth.uid()::text
+    const storagePath = `${user.id}/exam-files/${courseId}/${randomUUID()}-${safeName}`;
     const buffer = await file.arrayBuffer();
 
     const { error: uploadError } = await supabase.storage
@@ -51,8 +54,8 @@ export async function saveExamFile(
       .upload(storagePath, buffer, { contentType: file.type });
 
     if (uploadError) {
-      console.error("[saveExamFile] storage error:", uploadError);
-      return { error: `Failed to upload ${file.name}: ${uploadError.message}` };
+      console.error("[saveExamFile] storage error:", uploadError.message);
+      return { error: "Upload failed. Please try again." };
     }
 
     const { error: dbError } = await supabase.from("exam_files").insert({
@@ -63,9 +66,9 @@ export async function saveExamFile(
       file_size: file.size,
     });
     if (dbError) {
-      console.error("[saveExamFile] db error:", dbError);
+      console.error("[saveExamFile] db error:", dbError.message);
       await supabase.storage.from("exam-uploads").remove([storagePath]);
-      return { error: `Failed to save ${file.name}: ${dbError.message}` };
+      return { error: "Upload failed. Please try again." };
     }
   }
 
@@ -78,7 +81,7 @@ export async function deleteExamFile(fileId: string): Promise<ExamFileState> {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "Not authenticated." };
+  if (!user) return { error: "You must be signed in to delete files." };
 
   const { data: file } = await supabase
     .from("exam_files")
