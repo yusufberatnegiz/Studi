@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import OpenAI from "openai";
-import { createClient, createAdminClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { extractTextFromPdf, extractTextWithOCR } from "@/lib/extract";
 
 export type GenerateState =
@@ -288,7 +288,7 @@ export async function generateQuestions(
 
   // Download and process saved exam files from storage
   if (savedExamFileIds.length > 0) {
-    const { data: savedFiles } = await createAdminClient()
+    const { data: savedFiles } = await supabase
       .from("exam_files")
       .select("filename, storage_path")
       .in("id", savedExamFileIds)

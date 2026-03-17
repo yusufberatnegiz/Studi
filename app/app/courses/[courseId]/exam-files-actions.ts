@@ -3,7 +3,7 @@
 import { randomUUID } from "crypto";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { createClient, createAdminClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 export type ExamFile = {
   id: string;
@@ -55,8 +55,7 @@ export async function saveExamFile(
       return { error: `Failed to upload ${file.name}: ${uploadError.message}` };
     }
 
-    const admin = createAdminClient();
-    const { error: dbError } = await admin.from("exam_files").insert({
+    const { error: dbError } = await supabase.from("exam_files").insert({
       course_id: courseId,
       user_id: user.id,
       filename: file.name,
@@ -81,8 +80,7 @@ export async function deleteExamFile(fileId: string): Promise<ExamFileState> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: "Not authenticated." };
 
-  const admin = createAdminClient();
-  const { data: file } = await admin
+  const { data: file } = await supabase
     .from("exam_files")
     .select("id, storage_path, course_id")
     .eq("id", fileId)
@@ -91,7 +89,7 @@ export async function deleteExamFile(fileId: string): Promise<ExamFileState> {
   if (!file) return { error: "File not found." };
 
   await supabase.storage.from("exam-uploads").remove([file.storage_path]);
-  await admin.from("exam_files").delete().eq("id", fileId);
+  await supabase.from("exam_files").delete().eq("id", fileId);
 
   revalidatePath(`/app/courses/${file.course_id}/generate`);
   return { success: true };
