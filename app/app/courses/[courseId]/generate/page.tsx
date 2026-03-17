@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 import GenerateForm from "../generate-form";
 import { generateQuestions } from "../generate-actions";
 
@@ -26,7 +26,7 @@ export default async function GeneratePage({
       .eq("user_id", user.id)
       .single(),
     supabase.from("profiles").select("plan, daily_gen_count, daily_gen_date").eq("user_id", user.id).single(),
-    supabase
+    createAdminClient()
       .from("exam_files")
       .select("id, filename, file_size, created_at")
       .eq("course_id", courseId)
