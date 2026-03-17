@@ -42,22 +42,31 @@ export async function saveExamFile(
     if (!["pdf", "jpg", "jpeg", "png"].includes(ext)) continue;
     if (file.size > 10 * 1024 * 1024) return { error: `${file.name} exceeds 10 MB.` };
 
-    const storagePath = `exam-files/${user.id}/${courseId}/${randomUUID()}-${file.name}`;
+    const safeName = file.name.replace(/\s+/g, "_");
+    const storagePath = `exam-files/${user.id}/${courseId}/${randomUUID()}-${safeName}`;
     const buffer = await file.arrayBuffer();
 
     const { error: uploadError } = await supabase.storage
       .from("exam-uploads")
       .upload(storagePath, buffer, { contentType: file.type });
 
-    if (uploadError) return { error: `Failed to upload ${file.name}.` };
+    if (uploadError) {
+      console.error("[saveExamFile] storage error:", uploadError);
+      return { error: `Failed to upload ${file.name}: ${uploadError.message}` };
+    }
 
-    await supabase.from("exam_files").insert({
+    const { error: dbError } = await supabase.from("exam_files").insert({
       course_id: courseId,
       user_id: user.id,
       filename: file.name,
       storage_path: storagePath,
       file_size: file.size,
     });
+    if (dbError) {
+      console.error("[saveExamFile] db error:", dbError);
+      await supabase.storage.from("exam-uploads").remove([storagePath]);
+      return { error: `Failed to save ${file.name}: ${dbError.message}` };
+    }
   }
 
   revalidatePath(`/app/courses/${courseId}/generate`);
