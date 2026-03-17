@@ -55,7 +55,7 @@ export async function saveExamFile(
 
     if (uploadError) {
       console.error("[saveExamFile] storage error:", uploadError.message);
-      return { error: `Storage error: ${uploadError.message}` };
+      return { error: "Upload failed. Please try again." };
     }
 
     const { error: dbError } = await supabase.from("exam_files").insert({
@@ -68,7 +68,7 @@ export async function saveExamFile(
     if (dbError) {
       console.error("[saveExamFile] db error:", dbError.message);
       await supabase.storage.from("exam-uploads").remove([storagePath]);
-      return { error: `DB error: ${dbError.message}` };
+      return { error: "Upload failed. Please try again." };
     }
   }
 
