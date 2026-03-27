@@ -1,29 +1,41 @@
 "use client";
 
-import { useEffect } from "react";
-import { initializePaddle } from "@paddle/paddle-js";
+import Script from "next/script";
+
+declare global {
+  interface Window {
+    Paddle?: {
+      Environment: { set: (env: string) => void };
+      Initialize: (options: { token: string }) => void;
+    };
+  }
+}
 
 /**
- * Initializes Paddle.js once on the client using the public client token.
- * Place this inside the root layout so it runs on every page.
- *
- * Checkout is NOT opened here - this only sets up the Paddle instance
- * so it is ready when billing is wired up.
+ * Loads the Paddle.js v2 CDN script and initializes it.
+ * - CDN script is required for Paddle Retain (payment recovery).
+ * - Runs on every page via root layout, including the public homepage.
+ * - Only sets sandbox mode when NEXT_PUBLIC_PADDLE_ENV === "sandbox".
+ * - getPaddleInstance() from @paddle/paddle-js reads window.Paddle set here.
  */
 export default function PaddleProvider() {
-  useEffect(() => {
-    const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
-    const env = process.env.NEXT_PUBLIC_PADDLE_ENV as "sandbox" | "production" | undefined;
+  const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
+  const env = process.env.NEXT_PUBLIC_PADDLE_ENV;
 
-    if (!token) return; // not configured yet - skip silently
+  if (!token) return null;
 
-    initializePaddle({
-      token,
-      environment: env === "production" ? "production" : "sandbox",
-    }).catch((err) => {
-      console.error("Paddle initialization error:", err);
-    });
-  }, []);
+  function handleLoad() {
+    if (!window.Paddle) return;
+    if (env === "sandbox") {
+      window.Paddle.Environment.set("sandbox");
+    }
+    window.Paddle.Initialize({ token: token! });
+  }
 
-  return null;
+  return (
+    <Script
+      src="https://cdn.paddle.com/paddle/v2/paddle.js"
+      onLoad={handleLoad}
+    />
+  );
 }
