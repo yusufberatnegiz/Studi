@@ -154,7 +154,7 @@ async function handleTransactionCompleted(data: Record<string, unknown>) {
   console.log("[paddle/webhook] transaction.completed — custom_data:", customData);
 
   if (!userId) {
-    console.error("[paddle/webhook] transaction.completed — missing userId in custom_data. Full data:", JSON.stringify(data));
+    console.error("[paddle/webhook] transaction.completed — missing userId in custom_data. transaction_id:", data.id);
     return;
   }
 
@@ -216,7 +216,7 @@ async function handleSubscriptionActivated(data: Record<string, unknown>) {
   console.log("[paddle/webhook] subscription.activated — custom_data:", customData);
 
   if (!userId) {
-    console.warn("[paddle/webhook] subscription.activated — missing userId in custom_data. Full data:", JSON.stringify(data));
+    console.warn("[paddle/webhook] subscription.activated — missing userId in custom_data. subscription_id:", data.id);
     return;
   }
 
@@ -249,7 +249,7 @@ async function handleSubscriptionCanceled(data: Record<string, unknown>) {
   console.log("[paddle/webhook] subscription.canceled — custom_data:", customData);
 
   if (!userId) {
-    console.warn("[paddle/webhook] subscription.canceled — missing userId. Full data:", JSON.stringify(data));
+    console.warn("[paddle/webhook] subscription.canceled — missing userId. subscription_id:", data.id);
     return;
   }
 

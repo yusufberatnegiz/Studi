@@ -292,7 +292,8 @@ export async function generateQuestions(
       .from("exam_files")
       .select("filename, storage_path")
       .in("id", savedExamFileIds)
-      .eq("user_id", user.id);
+      .eq("user_id", user.id)
+      .eq("course_id", courseId);
 
     for (const sf of savedFiles ?? []) {
       const { data: blob } = await supabase.storage
