@@ -357,7 +357,7 @@ export async function generateQuestions(
   // ---------------------------------------------------------------------------
 
   const questionSetId = randomUUID();
-  const title = `${course.title} - ${new Date().toLocaleDateString("en-GB")}`;
+  const title = `${course.title} - ${new Date().toLocaleDateString("en-US")}`;
 
   const { error: qsError } = await supabase.from("question_sets").insert({
     id: questionSetId,
@@ -594,7 +594,7 @@ Generate exactly 5 exam-style practice questions that specifically target the we
 
   // 4. Create question_set row
   const questionSetId = randomUUID();
-  const title = `${course.title} - Weak Topics - ${new Date().toLocaleDateString("en-GB")}`;
+  const title = `${course.title} - Weak Topics - ${new Date().toLocaleDateString("en-US")}`;
 
   const { error: qsError } = await supabase.from("question_sets").insert({
     id: questionSetId,

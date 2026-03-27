@@ -405,7 +405,7 @@ export default async function CourseDetailPage({
                   </div>
                   <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5">
                     {qs.questionCount} {qs.questionCount === 1 ? "question" : "questions"} &middot;{" "}
-                    {new Date(qs.created_at).toLocaleDateString()}
+                    {new Date(qs.created_at).toLocaleDateString("en-US")}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">

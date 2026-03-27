@@ -125,7 +125,7 @@ export default function SetsList({
                     </div>
                     <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5">
                       {count} {count === 1 ? "question" : "questions"} &middot;{" "}
-                      {new Date(qs.created_at).toLocaleString()}
+                      {new Date(qs.created_at).toLocaleDateString("en-US")}
                     </p>
                   </div>
                 )}

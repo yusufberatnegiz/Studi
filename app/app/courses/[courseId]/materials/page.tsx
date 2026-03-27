@@ -93,7 +93,7 @@ export default async function MaterialsPage({
                     {doc.filename}
                   </p>
                   <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5">
-                    {new Date(doc.created_at).toLocaleString()}
+                    {new Date(doc.created_at).toLocaleDateString("en-US")}
                   </p>
                   {doc.status === "failed" && doc.error && (
                     <p className="text-xs text-red-400 mt-1">{doc.error}</p>
