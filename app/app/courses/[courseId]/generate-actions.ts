@@ -52,15 +52,15 @@ function parseTypeCounts(instructions: string, fallbackTotal: number): TypeCount
     return m ? Math.max(0, parseInt(m[1])) : 0;
   };
 
-  const tf     = get(/(\d+)\s*(?:tf\b|true[\s\-/]?false)/);
-  const mcq    = get(/(\d+)\s*(?:mcq\b|multiple[\s\-]?choice)/);
-  const coding = get(/(\d+)\s*(?:coding\b|code\b)/);
-  const open   = get(/(\d+)\s*(?:open\b|explanation\b|definition\b)/);
+  const tf     = get(/(\d{1,2})\s*(?:tf\b|true[\s\-/]?false)/);
+  const mcq    = get(/(\d{1,2})\s*(?:mcq\b|multiple[\s\-]?choice)/);
+  const coding = get(/(\d{1,2})\s*(?:coding\b|code\b)/);
+  const open   = get(/(\d{1,2})\s*(?:open\b|explanation\b|definition\b)/);
 
   const sum = tf + mcq + coding + open;
   if (sum === 0) return null; // no explicit breakdown found
 
-  const totalMatch = s.match(/(\d+)\s*questions?\b/);
+  const totalMatch = s.match(/(\d{1,2})\s*questions?\b/);
   const total = totalMatch ? parseInt(totalMatch[1]) : sum;
 
   return { total, open, tf, mcq, coding };
