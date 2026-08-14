@@ -71,7 +71,7 @@ flowchart LR
 
 ```bash
 corepack pnpm install
-cp .env.local.example .env.local
+touch .env.local
 corepack pnpm dev
 ```
 
