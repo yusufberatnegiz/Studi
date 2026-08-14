@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { sendPasswordReset } from "./actions";
+import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -37,7 +38,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex flex-col items-center justify-center px-6">
       <Link href="/" className="mb-8 flex items-center gap-2">
-        <img src="/logo.png" alt="Exai" className="h-8 w-8 object-contain" />
+        <Logo size={32} />
         <span className="font-semibold text-gray-900 dark:text-white tracking-tight text-lg">Exai</span>
       </Link>
 

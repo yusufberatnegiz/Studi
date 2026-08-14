@@ -28,7 +28,10 @@ export default function CompletionScreen({
 }: Props) {
   const gradedQuestions = questions.filter((q) => grades[q.id] && !grades[q.id].gradingFailed);
   const correctCount = gradedQuestions.filter((q) => grades[q.id].is_correct).length;
-  const scorePercent = total > 0 ? Math.round((correctCount / total) * 100) : null;
+  const earnedScore = gradedQuestions.reduce((sum, question) => sum + grades[question.id].score, 0);
+  const scorePercent = gradedQuestions.length > 0 && total > 0
+    ? Math.round(earnedScore / total)
+    : null;
 
   const topicMap: Record<string, { total: number; correct: number }> = {};
   for (const q of questions) {

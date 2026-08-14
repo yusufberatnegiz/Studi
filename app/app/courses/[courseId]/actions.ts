@@ -5,38 +5,6 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { processSourceFile } from "@/lib/source-upload";
 
-export type UpgradeCourseState = { error: string } | { success: true } | null;
-
-/**
- * Placeholder upgrade action — simulates payment by setting is_premium = true.
- * Will be replaced by a real Stripe checkout flow in the billing milestone.
- */
-export async function upgradeCourse(courseId: string): Promise<UpgradeCourseState> {
-  if (!z.string().uuid().safeParse(courseId).success) {
-    return { error: "Invalid course." };
-  }
-
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { error: "Not authenticated." };
-
-  const { error } = await supabase
-    .from("courses")
-    .update({ is_premium: true })
-    .eq("id", courseId)
-    .eq("user_id", user.id);
-
-  if (error) {
-    console.error("Course upgrade error:", error);
-    return { error: "Something went wrong. Please try again." };
-  }
-
-  revalidatePath(`/app/courses/${courseId}`);
-  return { success: true };
-}
-
 export type UploadState = { error: string } | { success: true } | null;
 export type DeleteDocState = { error: string } | { success: true } | null;
 

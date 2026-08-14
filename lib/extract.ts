@@ -1,3 +1,5 @@
+import { AI_MODELS, createChatCompletionWithFallback } from "@/lib/ai-models";
+
 /**
  * Text extraction and chunking utilities.
  *
@@ -128,24 +130,33 @@ export async function extractTextWithOCR(
     const base64 = Buffer.from(buffer).toString("base64");
     const dataUrl = `data:${mimeType};base64,${base64}`;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "image_url",
-              image_url: { url: dataUrl },
-            },
-            {
-              type: "text",
-              text: "Extract all visible text from this image exactly as it appears.\nOutput plain text only - no summaries, no explanations, no markdown formatting.\nPreserve the original structure, line breaks, and any code snippets as written.",
-            },
-          ],
-        },
-      ],
-    });
+    const response = await createChatCompletionWithFallback(
+      openai,
+      {
+        max_completion_tokens: 16_000,
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "image_url",
+                image_url: { url: dataUrl },
+              },
+              {
+                type: "text",
+                text: "Extract all visible text from this image exactly as it appears.\nOutput plain text only - no summaries, no explanations, no markdown formatting.\nPreserve the original structure, line breaks, and any code snippets as written.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        primaryModel: AI_MODELS.utility,
+        fallbackModel: AI_MODELS.utilityFallback,
+        reasoningEffort: "none",
+        fallbackTemperature: 0,
+      }
+    );
 
     return response.choices[0]?.message?.content ?? "";
   } catch (err) {

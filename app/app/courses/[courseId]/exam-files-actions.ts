@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { getSourceFileMimeType, sanitizeFilename } from "@/lib/source-upload";
 
 export type ExamFile = {
   id: string;
@@ -39,10 +40,14 @@ export async function saveExamFile(
 
   for (const file of validFiles) {
     const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
-    if (!["pdf", "jpg", "jpeg", "png"].includes(ext)) continue;
+    if (!["pdf", "jpg", "jpeg", "png"].includes(ext)) {
+      return { error: `${file.name}: use PDF, JPG, or PNG.` };
+    }
     if (file.size > 10 * 1024 * 1024) return { error: `${file.name} exceeds 10 MB.` };
 
-    const safeName = file.name.replace(/\s+/g, "_");
+    const safeName = sanitizeFilename(file.name);
+    const mimeType = getSourceFileMimeType(file);
+    if (!mimeType) return { error: `${file.name}: unsupported file type.` };
     // Path: userId/exam-files/courseId/uuid-filename
     // userId is the first component — consistent with the existing bucket policy
     // that enforces (storage.foldername(name))[1] = auth.uid()::text
@@ -51,7 +56,7 @@ export async function saveExamFile(
 
     const { error: uploadError } = await supabase.storage
       .from("exam-uploads")
-      .upload(storagePath, buffer, { contentType: file.type });
+      .upload(storagePath, buffer, { contentType: mimeType });
 
     if (uploadError) {
       console.error("[saveExamFile] storage error:", uploadError.message);
@@ -91,8 +96,17 @@ export async function deleteExamFile(fileId: string): Promise<ExamFileState> {
     .single();
   if (!file) return { error: "File not found." };
 
-  await supabase.storage.from("exam-uploads").remove([file.storage_path]);
-  await supabase.from("exam_files").delete().eq("id", fileId);
+  const { error: storageError } = await supabase.storage
+    .from("exam-uploads")
+    .remove([file.storage_path]);
+  if (storageError) return { error: "Could not delete the stored file. Please try again." };
+
+  const { error: deleteError } = await supabase
+    .from("exam_files")
+    .delete()
+    .eq("id", fileId)
+    .eq("user_id", user.id);
+  if (deleteError) return { error: "Could not delete the file record. Please try again." };
 
   revalidatePath(`/app/courses/${file.course_id}/generate`);
   return { success: true };

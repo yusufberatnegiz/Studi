@@ -83,7 +83,7 @@ async function runExtraction({
   mimeType: string;
   content: ArrayBuffer;
   jobId: string;
-}) {
+}): Promise<string | null> {
   await supabase.from("documents").update({ status: "processing" }).eq("id", documentId);
   await supabase.from("jobs").update({ status: "running" }).eq("id", jobId);
 
@@ -165,8 +165,16 @@ async function runExtraction({
 
     await supabase.from("documents").update({ status: "ready" }).eq("id", documentId);
     await supabase.from("jobs").update({ status: "done" }).eq("id", jobId);
+    return null;
   } catch (err) {
-    const userMsg = "This file could not be processed. Try uploading another file.";
+    const detail = err instanceof Error ? err.message : "";
+    const userMsg =
+      detail.startsWith("This PDF appears to be scanned") ||
+      detail.startsWith("Image OCR found no readable text") ||
+      detail.startsWith("Legacy .ppt") ||
+      detail.startsWith("PPTX has no extractable text")
+        ? detail
+        : "This file could not be processed. Try uploading another file.";
     console.error("File extraction error:", err);
     await supabase
       .from("documents")
@@ -176,6 +184,7 @@ async function runExtraction({
       .from("jobs")
       .update({ status: "failed", error: userMsg })
       .eq("id", jobId);
+    return userMsg;
   }
 }
 
@@ -248,6 +257,13 @@ export async function processSourceFile(
     return `${file.name}: could not be queued for processing. Please try again.`;
   }
 
-  await runExtraction({ supabase, documentId, userId, mimeType, content, jobId });
-  return null;
+  const extractionError = await runExtraction({
+    supabase,
+    documentId,
+    userId,
+    mimeType,
+    content,
+    jobId,
+  });
+  return extractionError ? `${file.name}: ${extractionError}` : null;
 }

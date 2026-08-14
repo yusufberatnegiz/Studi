@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Logo from "@/components/logo";
 
 function IconCheck({ className }: { className?: string }) {
   return (
@@ -36,7 +37,7 @@ export default function PricingPage() {
       <nav className="sticky top-0 z-50 border-b border-gray-100 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Exai" className="h-7 w-7 object-contain" />
+            <Logo size={28} />
             <span className="font-semibold text-gray-900 dark:text-white tracking-tight">Exai</span>
           </Link>
           <div className="flex items-center gap-2">
@@ -141,7 +142,7 @@ export default function PricingPage() {
       <footer className="border-t border-gray-100 dark:border-zinc-800">
         <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-400 dark:text-zinc-500">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="Exai" className="h-5 w-5 object-contain opacity-60" />
+            <Logo size={20} className="opacity-60" />
             <span>Exai - AI-powered exam preparation</span>
           </div>
           <div className="flex items-center gap-4">

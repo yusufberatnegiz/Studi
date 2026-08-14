@@ -39,6 +39,7 @@ export default async function MaterialsPage({
     .from("documents")
     .select("id, filename, status, error, created_at")
     .eq("course_id", courseId)
+    .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
   return (

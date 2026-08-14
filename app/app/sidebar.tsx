@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useState, useEffect } from "react";
+import Logo from "@/components/logo";
 
 type Course = { id: string; title: string };
 
@@ -108,12 +109,12 @@ export default function Sidebar({
             title="Expand sidebar"
             className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
           >
-            <img src="/logo.png" alt="Exai" className="h-5 w-5 object-contain" />
+            <Logo size={20} />
           </button>
         ) : (
           <>
             <Link href="/app" className="flex items-center gap-2.5 flex-1 min-w-0">
-              <img src="/logo.png" alt="Exai" className="h-6 w-6 object-contain shrink-0" />
+              <Logo size={24} className="shrink-0" />
               <span className="text-[15px] font-semibold text-gray-900 dark:text-white tracking-tight">
                 Exai
               </span>

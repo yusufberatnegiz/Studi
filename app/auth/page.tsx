@@ -4,7 +4,7 @@ import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { checkEmailExists } from "./actions";
+import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -121,12 +121,6 @@ function AuthForm() {
       router.push("/app");
       router.refresh();
     } else {
-      const exists = await checkEmailExists(email);
-      if (exists) {
-        setError("An account with this email already exists. Try signing in.");
-        setLoading(false);
-        return;
-      }
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -165,7 +159,7 @@ function AuthForm() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex flex-col items-center justify-center px-6">
       <Link href="/" className="mb-8 flex items-center gap-2">
-        <img src="/logo.png" alt="Exai" className="h-8 w-8 object-contain" />
+        <Logo size={32} />
         <span className="font-semibold text-gray-900 dark:text-white tracking-tight text-lg">Exai</span>
       </Link>
 

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Sidebar from "./sidebar";
+import PaddleProvider from "@/components/paddle-provider";
 import PaddleRetainInit from "@/components/paddle-retain-init";
 import RememberMeGuard from "@/components/remember-me-guard";
 
@@ -18,7 +19,7 @@ export default async function AppLayout({
 
   const [{ data: courses }, { data: profile }] = await Promise.all([
     supabase.from("courses").select("id, title").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20),
-    supabase.from("profiles").select("paddle_customer_id").eq("id", user.id).single(),
+    supabase.from("profiles").select("paddle_customer_id").eq("user_id", user.id).single(),
   ]);
 
   return (
@@ -26,6 +27,7 @@ export default async function AppLayout({
       <Sidebar userEmail={user.email ?? null} courses={courses ?? []} />
       <div className="flex-1 min-w-0">{children}</div>
       <RememberMeGuard />
+      <PaddleProvider />
       {user.email && (
         <PaddleRetainInit
           email={user.email}

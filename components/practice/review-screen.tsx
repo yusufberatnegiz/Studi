@@ -53,7 +53,7 @@ export default function ReviewScreen({
                 <DifficultyBadge difficulty={q.difficulty} />
               </div>
               <div className="px-5 py-4 space-y-3">
-                <p className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed">
+                <p className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">
                   {q.question_text}
                 </p>
                 {wasSubmitted && submittedAnswer ? (
@@ -68,7 +68,7 @@ export default function ReviewScreen({
                       }`}
                     >
                       <span className="font-medium">Your answer: </span>
-                      {submittedAnswer}
+                      <span className="whitespace-pre-wrap">{submittedAnswer}</span>
                     </div>
                     {g && !g.gradingFailed && g.feedback && (
                       <p className="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed">{g.feedback}</p>

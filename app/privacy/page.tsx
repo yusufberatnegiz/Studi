@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Logo from "@/components/logo";
 
 export const metadata = {
   title: "Privacy Policy - Exai",
@@ -11,7 +12,7 @@ export default function PrivacyPage() {
       <nav className="border-b border-gray-100 dark:border-zinc-800">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Exai" className="h-7 w-7 object-contain" />
+            <Logo size={28} />
             <span className="font-semibold text-gray-900 dark:text-white tracking-tight">Exai</span>
           </Link>
           <Link

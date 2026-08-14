@@ -303,7 +303,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
                   </span>
                 </div>
                 <div className="px-5 py-4 space-y-3">
-                  <p className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed">{q.question_text}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">{q.question_text}</p>
                   {submittedAnswer ? (
                     <div className="space-y-2">
                       <div className={`rounded-lg px-3 py-2 text-sm border ${
@@ -344,8 +344,9 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
     const gradedQuestions = questions.filter((q) => grades[q.id] && !grades[q.id]?.gradingFailed);
     const correctCount = gradedQuestions.filter((q) => grades[q.id]?.is_correct).length;
     const answeredCount = questions.filter((q) => (answers[q.id] ?? "").trim()).length;
-    const scorePercent = gradedQuestions.length > 0
-      ? Math.round((correctCount / gradedQuestions.length) * 100)
+    const earnedScore = gradedQuestions.reduce((sum, question) => sum + (grades[question.id]?.score ?? 0), 0);
+    const scorePercent = gradedQuestions.length > 0 && total > 0
+      ? Math.round(earnedScore / total)
       : null;
 
     const topicMap: Record<string, { total: number; correct: number }> = {};
@@ -493,7 +494,7 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
 
           {/* Question + answer */}
           <div className="px-6 py-6 space-y-5">
-            <p className="text-base font-medium text-gray-900 dark:text-zinc-200 leading-relaxed">
+            <p className="text-base font-medium text-gray-900 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">
               {q.question_text}
             </p>
             <ExamAnswerInput

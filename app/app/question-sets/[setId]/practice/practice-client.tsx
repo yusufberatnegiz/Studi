@@ -240,7 +240,7 @@ export default function PracticeClient({
           </div>
 
           <div className="px-6 py-6 space-y-5">
-            <p className="text-base font-medium text-gray-900 dark:text-zinc-300 leading-relaxed">
+            <p className="text-base font-medium text-gray-900 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
               {q.question_text}
             </p>
 

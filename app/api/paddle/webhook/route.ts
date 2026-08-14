@@ -1,6 +1,12 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/server";
+
+const PaddleEventSchema = z.object({
+  event_type: z.string().min(1),
+  data: z.record(z.unknown()),
+});
 
 // ---------------------------------------------------------------------------
 // Health check — GET /api/paddle/webhook
@@ -15,7 +21,10 @@ export async function GET() {
 
   if (missing.length > 0) {
     console.error("[paddle/webhook] GET health check — MISSING ENV VARS:", missing);
-    return NextResponse.json({ ok: false, missing }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, message: "Billing webhook is not configured." },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ ok: true, message: "Paddle webhook route is ready." });
@@ -35,7 +44,7 @@ function verifySignature(rawBody: string, signatureHeader: string, secret: strin
   const h1 = parts["h1"];
 
   if (!ts || !h1) {
-    console.error("[paddle/webhook] Signature header missing ts or h1. Header:", signatureHeader);
+    console.error("[paddle/webhook] Signature header is malformed");
     return false;
   }
 
@@ -98,16 +107,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   console.log("[paddle/webhook] Signature verified OK");
 
-  let event: Record<string, unknown>;
+  let event: z.infer<typeof PaddleEventSchema>;
   try {
-    event = JSON.parse(rawBody);
+    event = PaddleEventSchema.parse(JSON.parse(rawBody));
   } catch {
-    console.error("[paddle/webhook] Failed to parse JSON body");
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    console.error("[paddle/webhook] Failed to validate event body");
+    return NextResponse.json({ error: "Invalid event" }, { status: 400 });
   }
 
-  const eventType = event.event_type as string;
-  const data = event.data as Record<string, unknown>;
+  const eventType = event.event_type;
+  const data = event.data;
 
   console.log("[paddle/webhook] Event type:", eventType);
 
@@ -151,8 +160,6 @@ async function handleTransactionCompleted(data: Record<string, unknown>) {
   const customData = (data.custom_data ?? {}) as CheckoutCustomData;
   const { userId, purchaseType, courseId } = customData;
 
-  console.log("[paddle/webhook] transaction.completed — custom_data:", customData);
-
   if (!userId) {
     console.error("[paddle/webhook] transaction.completed — missing userId in custom_data. transaction_id:", data.id);
     return;
@@ -162,12 +169,12 @@ async function handleTransactionCompleted(data: Record<string, unknown>) {
 
   if (purchaseType === "course") {
     if (!courseId) {
-      console.error("[paddle/webhook] transaction.completed — course purchase missing courseId. custom_data:", customData);
+      console.error("[paddle/webhook] transaction.completed — course purchase missing courseId");
       return;
     }
 
     const transactionId = data.id as string | undefined;
-    console.log("[paddle/webhook] Upgrading course", courseId, "for user", userId);
+    console.log("[paddle/webhook] Applying course upgrade");
 
     const { error } = await supabase
       .from("courses")
@@ -183,11 +190,11 @@ async function handleTransactionCompleted(data: Record<string, unknown>) {
       throw error;
     }
 
-    console.log("[paddle/webhook] Course", courseId, "upgraded to premium for user", userId);
+    console.log("[paddle/webhook] Course upgrade applied");
 
   } else if (purchaseType === "premium") {
     const customerId = data.customer_id as string | undefined;
-    console.log("[paddle/webhook] Upgrading profile to premium for user", userId);
+    console.log("[paddle/webhook] Applying premium upgrade");
 
     const { error } = await supabase
       .from("profiles")
@@ -202,18 +209,16 @@ async function handleTransactionCompleted(data: Record<string, unknown>) {
       throw error;
     }
 
-    console.log("[paddle/webhook] Profile upgraded to premium for user", userId);
+    console.log("[paddle/webhook] Premium upgrade applied");
 
   } else {
-    console.warn("[paddle/webhook] transaction.completed — unknown purchaseType:", purchaseType, "custom_data:", customData);
+    console.warn("[paddle/webhook] transaction.completed — unknown purchase type:", purchaseType);
   }
 }
 
 async function handleSubscriptionActivated(data: Record<string, unknown>) {
   const customData = (data.custom_data ?? {}) as CheckoutCustomData;
   const { userId } = customData;
-
-  console.log("[paddle/webhook] subscription.activated — custom_data:", customData);
 
   if (!userId) {
     console.warn("[paddle/webhook] subscription.activated — missing userId in custom_data. subscription_id:", data.id);
@@ -239,14 +244,12 @@ async function handleSubscriptionActivated(data: Record<string, unknown>) {
     throw error;
   }
 
-  console.log("[paddle/webhook] Subscription activated — user", userId, "is now premium, subscription:", subscriptionId);
+  console.log("[paddle/webhook] Subscription activation applied");
 }
 
 async function handleSubscriptionCanceled(data: Record<string, unknown>) {
   const customData = (data.custom_data ?? {}) as CheckoutCustomData;
   const { userId } = customData;
-
-  console.log("[paddle/webhook] subscription.canceled — custom_data:", customData);
 
   if (!userId) {
     console.warn("[paddle/webhook] subscription.canceled — missing userId. subscription_id:", data.id);
@@ -266,5 +269,5 @@ async function handleSubscriptionCanceled(data: Record<string, unknown>) {
     throw error;
   }
 
-  console.log("[paddle/webhook] Subscription canceled — user", userId, "downgraded to free");
+  console.log("[paddle/webhook] Subscription cancellation applied");
 }

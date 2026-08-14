@@ -7,6 +7,8 @@ import type { GenerateState } from "./generate-actions";
 import type { ExamFile, ExamFileState } from "./exam-files-actions";
 import { saveExamFile, deleteExamFile } from "./exam-files-actions";
 
+const MAX_SELECTED_EXAMS = 6;
+
 type Props = {
   courseId: string;
   isPremium?: boolean;
@@ -23,7 +25,7 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
   // Saved files state
   const [files, setFiles] = useState<ExamFile[]>(savedExamFiles);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(
-    new Set(savedExamFiles.map((f) => f.id))
+    new Set(savedExamFiles.slice(0, MAX_SELECTED_EXAMS).map((f) => f.id))
   );
   const [uploadState, setUploadState] = useState<ExamFileState>(null);
   const [isUploading, startUploadTransition] = useTransition();
@@ -33,7 +35,11 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
   function toggleSelect(id: string) {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else if (next.size < MAX_SELECTED_EXAMS) {
+        next.add(id);
+      }
       return next;
     });
   }
@@ -61,6 +67,9 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
     if (result && "success" in result) {
       setFiles((prev) => prev.filter((f) => f.id !== fileId));
       setSelectedIds((prev) => { const next = new Set(prev); next.delete(fileId); return next; });
+      setUploadState(null);
+    } else if (result && "error" in result) {
+      setUploadState(result);
     }
     setIsDeletingId(null);
   }
@@ -72,6 +81,7 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
     // Remove any stale savedExamFileId entries then re-add selected
     selectedIds.forEach((id) => formData.append("savedExamFileId", id));
     startTransition(async () => {
+      setState(null);
       const result = await action(null, formData);
       setState(result);
       if (result && "success" in result) {
@@ -135,7 +145,9 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
                   <button
                     type="button"
                     onClick={() => toggleSelect(f.id)}
-                    disabled={isPending}
+                    disabled={isPending || (!selected && selectedIds.size >= MAX_SELECTED_EXAMS)}
+                    aria-pressed={selected}
+                    aria-label={`${selected ? "Exclude" : "Include"} ${f.filename}`}
                     className={`shrink-0 w-4 h-4 rounded border-2 transition-colors flex items-center justify-center ${
                       selected
                         ? "border-blue-500 bg-blue-500"
@@ -181,7 +193,7 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
           <p className="text-xs text-red-500 mt-1">{uploadState.error}</p>
         )}
         <p className="text-xs text-gray-400 dark:text-zinc-500 mt-1.5">
-          PDF, JPG, PNG - max 10 MB each. Saved files persist between generations.
+          PDF, JPG, PNG - max 10 MB each. Select up to {MAX_SELECTED_EXAMS} examples per generation.
         </p>
       </div>
 
@@ -202,6 +214,7 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
           placeholder="Paste the exam questions here..."
           disabled={isPending}
           rows={5}
+          maxLength={30000}
         />
       </div>
 
@@ -216,6 +229,7 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
           placeholder="e.g. Include 3 MCQ and 2 true/false. Focus on sorting algorithms. Make them hard."
           disabled={isPending}
           rows={2}
+          maxLength={1000}
         />
       </div>
 
@@ -246,6 +260,14 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
         <p className="text-sm text-red-500 whitespace-pre-line">{state.error}</p>
       )}
       {state && "success" in state && (
+        <div className="space-y-2">
+        {state.warnings && state.warnings.length > 0 && (
+          <div className="rounded-lg border border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20 px-3 py-2">
+            {state.warnings.map((warning) => (
+              <p key={warning} className="text-xs text-amber-700 dark:text-amber-400">{warning}</p>
+            ))}
+          </div>
+        )}
         <div className="rounded-xl border border-gray-100 dark:border-zinc-700 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 gap-4 bg-white dark:bg-zinc-800">
             <div className="min-w-0">
@@ -258,7 +280,7 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
                 </span>
               </div>
               <p className="text-xs text-gray-400 dark:text-zinc-400 mt-0.5">
-                {total} {total === 1 ? "question" : "questions"} · just generated
+                {state.questionCount} {state.questionCount === 1 ? "question" : "questions"} · just generated
               </p>
             </div>
             <Link
@@ -279,6 +301,7 @@ export default function GenerateForm({ courseId, isPremium = false, action, save
               View all sets →
             </Link>
           </div>
+        </div>
         </div>
       )}
 
@@ -313,6 +336,7 @@ function CountStepper({
         type="button"
         disabled={disabled || value <= min}
         onClick={() => onChange(Math.max(min, value - 1))}
+        aria-label="Decrease question count"
         className="w-6 h-6 flex items-center justify-center rounded border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:bg-gray-50 dark:hover:bg-zinc-700 disabled:opacity-30 text-base leading-none select-none"
       >
         −
@@ -324,6 +348,7 @@ function CountStepper({
         type="button"
         disabled={disabled || value >= max}
         onClick={() => onChange(Math.min(max, value + 1))}
+        aria-label="Increase question count"
         className="w-6 h-6 flex items-center justify-center rounded border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-500 dark:text-zinc-400 hover:bg-gray-50 dark:hover:bg-zinc-700 disabled:opacity-30 text-base leading-none select-none"
       >
         +
