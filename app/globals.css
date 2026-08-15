@@ -61,3 +61,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+.math-content .katex-display {
+  margin: 0.9rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.15rem 0.1rem;
+}

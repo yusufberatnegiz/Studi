@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import type { AttemptResult, GradeResult } from "../practice/actions";
 import type { CodingEditorProps } from "@/components/practice/coding-editor";
+import { MathContent } from "@/components/math-content";
 
 const CodingEditorDynamic = dynamic(() => import("@/components/practice/coding-editor"), {
   ssr: false,
@@ -303,7 +304,10 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
                   </span>
                 </div>
                 <div className="px-5 py-4 space-y-3">
-                  <p className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">{q.question_text}</p>
+                  <MathContent
+                    content={q.question_text}
+                    className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed"
+                  />
                   {submittedAnswer ? (
                     <div className="space-y-2">
                       <div className={`rounded-lg px-3 py-2 text-sm border ${
@@ -325,7 +329,10 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
                   )}
                   <div className="rounded-xl bg-white dark:bg-zinc-800/80 border border-gray-200 dark:border-zinc-700 px-4 py-3 space-y-1.5">
                     <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">Solution</p>
-                    <p className="text-sm text-gray-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">{q.solution_text}</p>
+                    <MathContent
+                      content={q.solution_text}
+                      className="text-sm text-gray-700 dark:text-zinc-300 leading-relaxed"
+                    />
                   </div>
                 </div>
               </div>
@@ -494,9 +501,10 @@ export default function ExamClient({ questionSet, questions, action }: Props) {
 
           {/* Question + answer */}
           <div className="px-6 py-6 space-y-5">
-            <p className="text-base font-medium text-gray-900 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">
-              {q.question_text}
-            </p>
+            <MathContent
+              content={q.question_text}
+              className="text-base font-medium text-gray-900 dark:text-zinc-200 leading-relaxed"
+            />
             <ExamAnswerInput
               question={q}
               answer={answer}
@@ -629,7 +637,7 @@ function ExamAnswerInput({
                 : "border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-gray-600 dark:text-zinc-300 hover:border-gray-300 dark:hover:border-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-600"
             }`}
           >
-            {opt}
+            <MathContent content={opt} inline />
           </button>
         ))}
       </div>
@@ -660,7 +668,7 @@ function ExamAnswerInput({
                 {letter}
               </span>
               <span className={`text-sm leading-relaxed ${selected ? "text-emerald-800 dark:text-emerald-300 font-medium" : "text-gray-700 dark:text-zinc-300"}`}>
-                {opt}
+                <MathContent content={opt} inline />
               </span>
             </button>
           );

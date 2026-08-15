@@ -1,10 +1,11 @@
 import type { GradeResult } from "./types";
+import { MathContent } from "@/components/math-content";
 
 export function SolutionBox({ solution }: { solution: string }) {
   return (
     <div className="rounded-xl bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 px-4 py-3 space-y-1.5">
       <p className="text-xs font-semibold text-gray-400 dark:text-zinc-500 uppercase tracking-wide">Solution</p>
-      <p className="text-sm text-gray-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">{solution}</p>
+      <MathContent content={solution} className="text-sm text-gray-700 dark:text-zinc-300 leading-relaxed" />
     </div>
   );
 }

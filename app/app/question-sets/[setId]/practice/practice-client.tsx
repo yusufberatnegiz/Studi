@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { MathContent } from "@/components/math-content";
 import type { AttemptResult, GradeResult } from "./actions";
 import type { Question, QuestionSet, WeakTopicResult } from "@/components/practice/types";
 import PracticeNav from "@/components/practice/practice-nav";
@@ -240,9 +241,10 @@ export default function PracticeClient({
           </div>
 
           <div className="px-6 py-6 space-y-5">
-            <p className="text-base font-medium text-gray-900 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
-              {q.question_text}
-            </p>
+            <MathContent
+              content={q.question_text}
+              className="text-base font-medium text-gray-900 dark:text-zinc-300 leading-relaxed"
+            />
 
             <AnswerInput
               question={q}

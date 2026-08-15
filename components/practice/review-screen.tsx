@@ -3,6 +3,7 @@ import type { GradeResult, Question, QuestionSet } from "./types";
 import PracticeNav from "./practice-nav";
 import { DifficultyBadge } from "./question-header";
 import { SolutionBox } from "./result-panel";
+import { MathContent } from "@/components/math-content";
 
 type Props = {
   questionSet: QuestionSet;
@@ -53,9 +54,10 @@ export default function ReviewScreen({
                 <DifficultyBadge difficulty={q.difficulty} />
               </div>
               <div className="px-5 py-4 space-y-3">
-                <p className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">
-                  {q.question_text}
-                </p>
+                <MathContent
+                  content={q.question_text}
+                  className="text-sm font-medium text-gray-900 dark:text-zinc-200 leading-relaxed"
+                />
                 {wasSubmitted && submittedAnswer ? (
                   <div className="space-y-2">
                     <div

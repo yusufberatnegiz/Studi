@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import type { Question } from "./types";
 import type { CodingEditorProps } from "./coding-editor";
+import { MathContent } from "@/components/math-content";
 
 const CodingEditorDynamic = dynamic(() => import("./coding-editor"), {
   ssr: false,
@@ -57,7 +58,7 @@ export function AnswerInput({
                 }
                 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
-              {opt}
+              <MathContent content={opt} inline />
             </button>
           );
         })}
@@ -96,7 +97,7 @@ export function AnswerInput({
                   selected ? "text-blue-800 dark:text-blue-300 font-medium" : "text-gray-700 dark:text-zinc-300"
                 }`}
               >
-                {opt}
+                <MathContent content={opt} inline />
               </span>
             </button>
           );
