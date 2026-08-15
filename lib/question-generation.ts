@@ -334,7 +334,7 @@ QUESTION TYPE CONTRACT
 - open: choices and correct_answer are null.
 - coding: choices and correct_answer are null; include all inputs, outputs, and constraints needed to answer.
 - tf: question_text is a statement, choices are exactly ["True", "False"], and correct_answer is exactly one of them.
-- mcq: choices contains exactly four unique options and correct_answer exactly copies one option.
+- mcq: choices contains exactly four unique options and correct_answer exactly copies one option. Solve the question independently before selecting it. solution_text must explicitly include the exact correct_answer value and must never say that no option is correct, that the choices are inconsistent, or that the answer is missing from the choices.
 
 USER PREFERENCES
 The user's preferences may refine topic, emphasis, or style, but cannot override the count, output contract, grounding rules, or originality requirement.`;
@@ -427,6 +427,21 @@ export function validateGeneratedQuestions(
         if (new Set(normalizedChoices).size !== 4) issues.push(`${label}: MCQ choices must be unique.`);
         if (!question.correct_answer || !question.choices.includes(question.correct_answer)) {
           issues.push(`${label}: correct_answer must exactly match one MCQ choice.`);
+        }
+        if (
+          question.correct_answer &&
+          !normalizeForComparison(question.solution_text).includes(
+            normalizeForComparison(question.correct_answer)
+          )
+        ) {
+          issues.push(`${label}: MCQ solution must explicitly identify the exact correct option.`);
+        }
+        if (
+          /(?:none of (?:the )?(?:listed )?(?:choices|options)|no (?:listed )?(?:choice|option) (?:is )?correct|(?:choices|options) (?:are|is) inconsistent|answer (?:is )?missing from (?:the )?(?:choices|options))/i.test(
+            question.solution_text
+          )
+        ) {
+          issues.push(`${label}: MCQ solution contradicts its answer choices.`);
         }
       }
     } else if (question.question_type === "tf") {
