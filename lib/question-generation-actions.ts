@@ -13,6 +13,7 @@ import {
   buildBalancedContext,
   generateQuestionSet,
   parseTypeCounts,
+  QuestionGenerationQualityError,
   type ContextGroup,
   type LabeledContext,
 } from "@/lib/question-generation";
@@ -432,7 +433,11 @@ export async function generateQuestions(
     };
   } catch (error) {
     console.error("Question generation failed:", safeErrorMessage(error));
-    return { error: "Question generation did not pass the quality checks. Please try again." };
+    return {
+      error: error instanceof QuestionGenerationQualityError
+        ? "Question generation did not pass the quality checks. Please try again."
+        : "Question generation is temporarily unavailable. Please try again in a moment.",
+    };
   }
 }
 
@@ -556,6 +561,10 @@ export async function generateWeakTopicQuestions(
     return { questionSetId: saved.questionSetId };
   } catch (error) {
     console.error("Weak-topic generation failed:", safeErrorMessage(error));
-    return { error: "Weak-topic generation did not pass the quality checks. Please try again." };
+    return {
+      error: error instanceof QuestionGenerationQualityError
+        ? "Weak-topic generation did not pass the quality checks. Please try again."
+        : "Weak-topic generation is temporarily unavailable. Please try again in a moment.",
+    };
   }
 }

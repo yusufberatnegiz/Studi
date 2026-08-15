@@ -21,6 +21,13 @@ export const GeneratedQuestionSchema = z.object({
 
 export type GeneratedQuestion = z.infer<typeof GeneratedQuestionSchema>;
 
+export class QuestionGenerationQualityError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "QuestionGenerationQualityError";
+  }
+}
+
 const StyleProfileSchema = z.object({
   language: z.string().trim().min(1).max(80),
   overall_difficulty: z.enum(["easy", "medium", "hard", "mixed"]),
@@ -234,13 +241,57 @@ function normalizeGeneratedReference(value: string): string {
     : trimmed;
 }
 
-function normalizeGeneratedQuestionReferences(question: GeneratedQuestion): GeneratedQuestion {
+function referenceKey(value: string): string {
+  return normalizeGeneratedReference(value)
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[\[\]]/g, "");
+}
+
+function resolveReference(value: string, references: string[]): string {
+  const key = referenceKey(value);
+  return references.find((reference) => referenceKey(reference) === key) ?? normalizeGeneratedReference(value);
+}
+
+function normalizeCorrectAnswer(question: GeneratedQuestion): GeneratedQuestion {
+  if (!question.choices || !question.correct_answer) return question;
+
+  const answer = question.correct_answer.trim();
+  const answerKey = normalizeForComparison(answer);
+  const exactChoice = question.choices.find(
+    (choice) => normalizeForComparison(choice) === answerKey
+  );
+  if (exactChoice) return { ...question, correct_answer: exactChoice };
+
+  const optionMatch = answer.match(/^(?:option\s*)?([A-D])(?:[.)\s]|$)/i);
+  if (optionMatch) {
+    const index = optionMatch[1].toUpperCase().charCodeAt(0) - "A".charCodeAt(0);
+    if (question.choices[index]) return { ...question, correct_answer: question.choices[index] };
+  }
+
+  return question;
+}
+
+function normalizeGeneratedQuestion(
+  question: GeneratedQuestion,
+  input: Pick<GenerateQuestionSetInput, "examContext" | "knowledgeContext">
+): GeneratedQuestion {
+  const allowedSources = input.knowledgeContext.references.length
+    ? input.knowledgeContext.references
+    : input.examContext?.references ?? [];
+  const styleReferences = input.examContext?.references ?? [];
+  const normalized = normalizeCorrectAnswer(question);
+  const styleReference = normalized.style_reference
+    ? resolveReference(normalized.style_reference, styleReferences)
+    : null;
+
   return {
-    ...question,
-    source_refs: question.source_refs.map(normalizeGeneratedReference),
-    style_reference: question.style_reference
-      ? normalizeGeneratedReference(question.style_reference)
-      : null,
+    ...normalized,
+    source_refs: normalized.source_refs.map((reference) => resolveReference(reference, allowedSources)),
+    // This is audit metadata only and is not persisted with the question. A
+    // near-miss should not discard an otherwise well-grounded question set.
+    style_reference:
+      styleReference && styleReferences.includes(styleReference) ? styleReference : null,
   };
 }
 
@@ -397,10 +448,6 @@ export function validateGeneratedQuestions(
     if (!question.source_refs.some((ref) => allowedSources.has(ref))) {
       issues.push(`${label}: include at least one exact supporting source reference.`);
     }
-    if (styleReferences.size > 0 && (!question.style_reference || !styleReferences.has(question.style_reference))) {
-      issues.push(`${label}: style_reference must exactly match a supplied style label.`);
-    }
-
     const normalizedQuestion = normalizeForComparison(question.question_text);
     if (normalizedQuestion.length > 60 && normalizedExam.includes(normalizedQuestion)) {
       issues.push(`${label}: the stem copies a reference too closely; create a structural analogue instead.`);
@@ -444,7 +491,7 @@ export async function generateQuestionSet(input: GenerateQuestionSetInput): Prom
 
   let correction = "";
   let lastError = "Question generation failed validation.";
-  for (let attempt = 0; attempt < 2; attempt += 1) {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
       const completion = await createChatCompletionWithFallback(
         openai,
@@ -470,7 +517,7 @@ export async function generateQuestionSet(input: GenerateQuestionSetInput): Prom
       const raw = completion.choices[0]?.message?.content;
       if (!raw) throw new Error("The model returned no content.");
       const parsed = responseSchema.parse(JSON.parse(raw));
-      const questions = parsed.questions.map(normalizeGeneratedQuestionReferences);
+      const questions = parsed.questions.map((question) => normalizeGeneratedQuestion(question, input));
       const issues = validateGeneratedQuestions(questions, input);
       if (issues.length === 0) return questions;
 
@@ -482,5 +529,5 @@ export async function generateQuestionSet(input: GenerateQuestionSetInput): Prom
     }
   }
 
-  throw new Error(lastError);
+  throw new QuestionGenerationQualityError(lastError);
 }
